@@ -862,7 +862,7 @@
       const mapEl = document.getElementById('map');
       if(mapEl) {
         setTimeout(() => {
-            var map = L.map('map').setView([40.0008, 3.8378], 16);
+            var map = L.map('map').setView([39.99950788338781, 3.840228630823623], 16);
             
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
               maxZoom: 19,
@@ -873,12 +873,15 @@
             var pIcon = L.divIcon({ className: 'custom-marker', html: 'P', iconSize: [24, 24], iconAnchor: [12, 12] });
             var busIcon = L.divIcon({ className: 'custom-marker', html: 'B', iconSize: [24, 24], iconAnchor: [12, 12] });
 
-            L.marker([40.0008, 3.8378], {icon: hotelIcon}).addTo(map).bindPopup('<b>Hotel Géminis</b><br>C/ Josepa Rossinyol, 4').openPopup();
-            L.marker([40.0016, 3.8351], {icon: busIcon}).addTo(map).bindPopup('Estación de Autobuses (Plaza dels Pins)');
-            L.marker([40.0035, 3.8380], {icon: pIcon}).addTo(map).bindPopup('Aparcamiento Público');
+            L.marker([39.99950788338781, 3.840228630823623], {icon: hotelIcon}).addTo(map).bindPopup('<b>Hotel Géminis</b><br>C/ Josepa Rossinyol, 4').openPopup();
+            L.marker([39.99817471769777, 3.839113340584561], {icon: busIcon}).addTo(map).bindPopup('Estación de Autobuses (Plaza dels Pins)');
+            L.marker([39.998556289633875, 3.839100600093614], {icon: pIcon}).addTo(map).bindPopup('Aparcamiento Público');
+            L.marker([39.99937930170303, 3.8466732838880677], {icon: pIcon}).addTo(map).bindPopup('Aparcamiento Público');
+            L.marker([39.9964440770245, 3.844736679493242], {icon: pIcon}).addTo(map).bindPopup('Aparcamiento Público');
         }, 500);
       }
     });
+    
 
     // 3. BILLETE (ANIMACIÓN OPEN TICKET)
     function tearTicketAndBook() {
@@ -1114,4 +1117,3 @@
   </script>
 </body>
 </html>
-```<FollowUp label="¿Quieres que haga algún ajuste más al diseño?" query="¿Quieres que haga algún ajuste más al diseño de la página?"/>
