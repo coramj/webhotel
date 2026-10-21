@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
   <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
 
   <style>
     :root {
@@ -25,7 +25,6 @@
       --wood-oak: #B88B58;         
       --wood-dark: #7D5A36;        
       --sant-joan-red: #8C232A;    
-      --terracotta: #C26343;       
       --ink-dark: #1C231E;         
       --ink-muted: #525B54;        
       --border-subtle: rgba(52, 78, 59, 0.16);
@@ -40,7 +39,7 @@
 
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: 90px; /* Evita que la navbar tape los títulos al hacer click en el menú */
+      scroll-padding-top: 90px;
     }
 
     body {
@@ -53,7 +52,7 @@
     }
 
     /* ==========================================================================
-       FONDO DINÁMICO & MOSAICOS FLOTANTES (JUGUETÓN)
+       FONDO DINÁMICO & MOSAICOS (BASE64 SAFE)
        ========================================================================== */
     .dynamic-bg {
       position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
@@ -64,31 +63,36 @@
       background-size: 32px 32px; background-position: 0 0, 16px 16px;
     }
 
-    .floating-tile {
-      position: absolute;
-      width: 60px; height: 60px;
-      opacity: 0.05;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='%236A8468'%3E%3Crect x='0' y='0' width='11' height='11'/%3E%3Crect x='22' y='0' width='11' height='11'/%3E%3Crect x='11' y='11' width='11' height='11'/%3E%3Crect x='33' y='11' width='11' height='11'/%3E%3Crect x='0' y='22' width='11' height='11'/%3E%3Crect x='22' y='22' width='11' height='11'/%3E%3Crect x='11' y='33' width='11' height='11'/%3E%3Crect x='33' y='33' width='11' height='11'/%3E%3C/g%3E%3C/svg%3E");
-      animation: floatUp 25s linear infinite;
+    /* Patrón de cuadrados verdes en Base64 para evitar errores de renderizado */
+    .mosaic-bg-subtle { position: relative; }
+    .mosaic-bg-subtle::after {
+      content: ''; position: absolute; inset: 0; opacity: 0.04; pointer-events: none; z-index: 1;
+      background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0NCcgaGVpZ2h0PSc0NCcgdmlld0JveD0nMCAwIDQ0IDQ0Jz4KICA8ZyBmaWxsPScjNkE4NDY4JyBmaWxsLW9wYWNpdHk9JzEnPgogICAgPHJlY3QgeD0nMCcgeT0nMCcgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICA8cmVjdCB4PScyMicgeT0nMCcgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICA8cmVjdCB4PScxMScgeT0nMTEnIHdpZHRoPScxMScgaGVpZ2h0PScxMScvPgogICAgPHJlY3QgeD0nMzMnIHk9JzExJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgIDxyZWN0IHg9JzAnIHk9JzIyJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgIDxyZWN0IHg9JzIyJyB5PScyMicgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICA8cmVjdCB4PScxMScgeT0nMzMnIHdpZHRoPScxMScgaGVpZ2h0PScxMScvPgogICAgPHJlY3QgeD0nMzMnIHk9JzMzJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICA8L2c+Cjwvc3ZnPg==");
     }
 
-    .floating-tile:nth-child(1) { left: 10%; bottom: -10%; animation-duration: 22s; animation-delay: 0s; transform: rotate(15deg) scale(1.2); }
-    .floating-tile:nth-child(2) { left: 85%; bottom: -10%; animation-duration: 28s; animation-delay: 5s; transform: rotate(-20deg) scale(0.8); opacity: 0.07; }
-    .floating-tile:nth-child(3) { left: 50%; bottom: -10%; animation-duration: 35s; animation-delay: 2s; transform: rotate(45deg) scale(1.5); }
-    .floating-tile:nth-child(4) { left: 25%; bottom: -10%; animation-duration: 26s; animation-delay: 12s; transform: rotate(-10deg) scale(0.9); }
+    .floating-tile {
+      position: absolute; width: 60px; height: 60px; opacity: 0.04;
+      background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0NCcgaGVpZ2h0PSc0NCcgdmlld0JveD0nMCAwIDQ0IDQ0Jz4KICA8ZyBmaWxsPScjNkE4NDY4JyBmaWxsLW9wYWNpdHk9JzEnPgogICAgPHJlY3QgeD0nMCcgeT0nMCcgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICA8cmVjdCB4PScyMicgeT0nMCcgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICA8cmVjdCB4PScxMScgeT0nMTEnIHdpZHRoPScxMScgaGVpZ2h0PScxMScvPgogICAgPHJlY3QgeD0nMzMnIHk9JzExJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgIDxyZWN0IHg9JzAnIHk9JzIyJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgIDxyZWN0IHg9JzIyJyB5PScyMicgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICA8cmVjdCB4PScxMScgeT0nMzMnIHdpZHRoPScxMScgaGVpZ2h0PScxMScvPgogICAgPHJlY3QgeD0nMzMnIHk9JzMzJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICA8L2c+Cjwvc3ZnPg==");
+      animation: floatUp 35s linear infinite;
+    }
+
+    .floating-tile:nth-child(1) { left: 10%; bottom: -10%; animation-duration: 30s; transform: rotate(15deg); }
+    .floating-tile:nth-child(2) { left: 85%; bottom: -10%; animation-duration: 40s; animation-delay: 5s; transform: rotate(-20deg) scale(0.8); }
+    .floating-tile:nth-child(3) { left: 50%; bottom: -10%; animation-duration: 45s; animation-delay: 10s; transform: rotate(45deg) scale(1.2); }
 
     @keyframes floatUp {
       0% { transform: translateY(100px) rotate(0deg); }
       100% { transform: translateY(-120vh) rotate(180deg); }
     }
 
-    /* Elementos interactivos (Hover) */
-    .playful-hover { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease; }
-    .playful-hover:hover { transform: translateY(-6px) rotate(-1deg) scale(1.02); box-shadow: 0 16px 30px rgba(52, 78, 59, 0.1); border-color: var(--green-sage); z-index: 10;}
-    .playful-hover-alt:hover { transform: translateY(-6px) rotate(1.5deg) scale(1.02); box-shadow: 0 16px 30px rgba(52, 78, 59, 0.1); z-index: 10;}
-
-    /* Animaciones Scroll */
-    .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    /* Animaciones sutiles y elegantes (Hover & Reveal) */
+    .hover-lift { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease; }
+    .hover-lift:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(52, 78, 59, 0.08); z-index: 10; border-color: var(--green-sage);}
+    
+    .rating-pill { display: inline-flex; align-items: center; gap: 10px; background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 6px 14px; border-radius: 999px; font-size: 0.82rem; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: default; }
+    .rating-pill:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+    
+    .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
     .reveal.active { opacity: 1; transform: translateY(0); }
 
     /* Sellos de viaje */
@@ -109,11 +113,11 @@
     .stamp-2 { top: 40%; left: 2%; --rot: -14deg; --stamp-color: var(--green-curtain); }
     .stamp-3 { top: 75%; right: 3%; --rot: -8deg; --stamp-color: var(--wood-dark); }
 
-    /* Cenefa hidráulica */
+    /* Divisor Cenefa (Base64 Safe) */
     .hydraulic-ribbon {
       width: 100%; height: 44px; background-color: var(--bg-sand);
       border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='176' height='44' viewBox='0 0 176 44'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Crect width='44' height='44' fill='%23F6F3EA'/%3E%3Cg fill='%236A8468' fill-opacity='0.45'%3E%3Crect x='0' y='0' width='11' height='11'/%3E%3Crect x='22' y='0' width='11' height='11'/%3E%3Crect x='11' y='11' width='11' height='11'/%3E%3Crect x='33' y='11' width='11' height='11'/%3E%3Crect x='0' y='22' width='11' height='11'/%3E%3Crect x='22' y='22' width='11' height='11'/%3E%3Crect x='11' y='33' width='11' height='11'/%3E%3Crect x='33' y='33' width='11' height='11'/%3E%3C/g%3E%3Crect x='44' width='44' height='44' fill='%23ECE6D6'/%3E%3Cpolygon points='66,4 84,22 66,40 48,22' fill='%23344E3B' fill-opacity='0.75'/%3E%3Ccircle cx='66' cy='22' r='6' fill='%23B88B58' fill-opacity='0.8'/%3E%3Ccircle cx='66' cy='22' r='2.5' fill='%23F6F3EA'/%3E%3Crect x='88' width='44' height='44' fill='%23F6F3EA'/%3E%3Cpath d='M110 6 C114 14 118 18 126 22 C118 26 114 30 110 38 C106 30 102 26 94 22 C102 18 106 14 110 6 Z' stroke='%236A8468' stroke-width='2' fill='%236A8468' fill-opacity='0.25'/%3E%3Crect x='132' width='44' height='44' fill='%23344E3B' fill-opacity='0.12'/%3E%3Cpath d='M150 10 L158 10 L156 18 L164 16 L164 24 L156 22 L158 30 L150 30 L152 22 L144 24 L144 16 L152 18 Z' fill='%238C232A' fill-opacity='0.45'/%3E%3C/g%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxNzYnIGhlaWdodD0nNDQnIHZpZXdCb3g9JzAgMCAxNzYgNDQnPgogIDxnIGZpbGw9J25vbmUnIGZpbGwtcnVsZT0nZXZlbm9kZCc+CiAgICA8cmVjdCB3aWR0aD0nNDQnIGhlaWdodD0nNDQnIGZpbGw9JyNGNkYzRUEnLz4KICAgIDxnIGZpbGw9JyM2QTg0NjgnIGZpbGwtb3BhY2l0eT0nMC40NSc+CiAgICAgIDxyZWN0IHg9JzAnIHk9JzAnIHdpZHRoPScxMScgaGVpZ2h0PScxMScvPgogICAgICA8cmVjdCB4PScyMicgeT0nMCcgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICAgIDxyZWN0IHg9JzExJyB5PScxMScgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICAgIDxyZWN0IHg9JzMzJyB5PScxMScgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICAgIDxyZWN0IHg9JzAnIHk9JzIyJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgICAgPHJlY3QgeD0nMjInIHk9JzIyJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgICAgPHJlY3QgeD0nMTEnIHk9JzMzJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgICAgPHJlY3QgeD0nMzMnIHk9JzMzJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgIDwvZz4KICAgIDxyZWN0IHg9JzQ0JyB3aWR0aD0nNDQnIGhlaWdodD0nNDQnIGZpbGw9JyNFQ0U2RDYnLz4KICAgIDxwb2x5Z29uIHBvaW50cz0nNjYsNCA4NCwyMiA2Niw0MCA0OCwyMicgZmlsbD0nIzM0NEUzQicgZmlsbC1vcGFjaXR5PScwLjc1Jy8+CiAgICA8Y2lyY2xlIGN4PSc2NicgY3k9JzIyJyByPSc2JyBmaWxsPScjQjg4QjU4JyBmaWxsLW9wYWNpdHk9JzAuOCcvPgogICAgPGNpcmNsZSBjeD0nNjYnIGN5PScyMicgcj0nMi41JyBmaWxsPScjRjZGM0VBJy8+CiAgICA8cmVjdCB4PSc4OCcgd2lkdGg9JzQ0JyBoZWlnaHQ9JzQ0JyBmaWxsPScjRjZGM0VBJy8+CiAgICA8cGF0aCBkPSdNMTEwIDYgQzExNCAxNCAxMTggMTggMTI2IDIyIEMxMTggMjYgMTE0IDMwIDExMCAzOCBDMTA2IDMwIDEwMiAyNiA5NCAyMiBDMTAyIDE4IDEwNiAxNCAxMTAgNiBaJyBzdHJva2U9JyM2QTg0NjgnIHN0cm9rZS13aWR0aD0nMicgZmlsbD0nIzZBODY4JyBmaWxsLW9wYWNpdHk9JzAuMjUnLz4KICAgIDxyZWN0IHg9JzEzMicgd2lkdGg9JzQ0JyBoZWlnaHQ9JzQ0JyBmaWxsPScjMzQ0RTNCJyBmaWxsLW9wYWNpdHk9JzAuMTInLz4KICAgIDxwYXRoIGQ9J00xNTAgMTAgTDE1OCAxMCBMMTU2IDE4IEwxNjQgMTYgTDE2NCAyNCBMMTU2IDIyIEwxNTggMzAgTDE1MCAzMCBMMTUyIDIyIEwxNDQgMjQgTDE0NCAxNiBMMTUyIDE4IFonIGZpbGw9JyM4QzIzMkEnIGZpbGwtb3BhY2l0eT0nMC40NScvPgogIDwvZz4KPC9zdmc+");
       position: relative; z-index: 2;
     }
 
@@ -125,12 +129,11 @@
     .topbar-contact a:hover { opacity: 1; text-decoration: underline; }
     .topbar-right { display: flex; align-items: center; gap: 16px; }
     
-    /* Idiomas independientes (Archivos separados) */
     .lang-switcher { display: flex; gap: 4px; background: rgba(255, 255, 255, 0.1); padding: 3px; border-radius: 6px; }
-    .lang-btn { text-decoration: none; background: transparent; border: none; color: rgba(255, 255, 255, 0.75); font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; transition: all 0.2s; }
+    .lang-btn { text-decoration: none; background: transparent; border: none; color: rgba(255, 255, 255, 0.75); font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; transition: all 0.2s; cursor: pointer;}
     .lang-btn.active, .lang-btn:hover { background: var(--bg-chalk); color: var(--green-curtain); }
     
-    .my-booking-trigger { background: transparent; border: 1px solid rgba(255,255,255,0.35); color: #fff; font-size: 0.76rem; padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+    .my-booking-trigger { background: transparent; border: 1px solid rgba(255,255,255,0.35); color: #fff; font-size: 0.76rem; padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: background 0.2s; font-family: var(--font-sans);}
     .my-booking-trigger:hover { background: rgba(255,255,255,0.15); }
 
     /* Navbar */
@@ -153,7 +156,6 @@
     /* Hero */
     .hero { max-width: 1240px; margin: 0 auto; padding: 56px 24px 72px; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 52px; align-items: center; position: relative; z-index: 2; }
     .hero-badges { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
-    .rating-pill { display: inline-flex; align-items: center; gap: 10px; background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 6px 14px; border-radius: 999px; font-size: 0.82rem; }
     .rating-score { background: var(--green-curtain); color: #fff; font-family: var(--font-mono); font-weight: 700; padding: 2px 7px; border-radius: 99px; font-size: 0.78rem; }
     .rating-score--google { background: var(--wood-oak); color: var(--ink-dark); }
     .hero h1 { font-family: var(--font-display); font-size: clamp(2.7rem, 4.7vw, 4.3rem); font-weight: 600; line-height: 1.06; letter-spacing: -0.02em; margin-bottom: 22px; }
@@ -173,7 +175,7 @@
     .postcard-main { background: var(--bg-card); padding: 14px 14px 42px 14px; border-radius: 8px 24px 8px 24px; box-shadow: 0 20px 40px rgba(28, 35, 30, 0.12); border: 1px solid var(--border-subtle); transform: rotate(1.5deg); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative; }
     .postcard-main:hover { transform: rotate(0deg) scale(1.02); z-index: 10; }
     .postcard-main img { width: 100%; height: 390px; object-fit: cover; border-radius: 4px 16px 4px 16px; display: block; }
-    .postcard-caption { position: absolute; bottom: 12px; left: 18px; right: 18px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-muted); }
+    .postcard-caption { position: absolute; bottom: 12px; left: 18px; right: 18px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-muted); z-index: 2;}
     
     .postcard-floating { position: absolute; bottom: -24px; left: -20px; width: 220px; background: var(--bg-card); padding: 10px 10px 28px 10px; border-radius: 4px; box-shadow: 0 14px 28px rgba(0,0,0,0.14); border: 1px solid var(--border-subtle); transform: rotate(-5deg); z-index: 3; transition: transform 0.3s; }
     .postcard-floating:hover { transform: rotate(-2deg) scale(1.05); z-index: 11; }
@@ -194,35 +196,14 @@
     /* Perks Grid */
     .perks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 24px; }
     .perk-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px 4px 16px 4px; padding: 28px; position: relative; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;}
-    .mosaic-bg-subtle {
-      position: relative;
-    }
-    .mosaic-bg-subtle::after {
-      content: ''; position: absolute; inset: 0; opacity: 0.03; pointer-events: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='%236A8468'%3E%3Crect x='0' y='0' width='11' height='11'/%3E%3Crect x='22' y='0' width='11' height='11'/%3E%3Crect x='11' y='11' width='11' height='11'/%3E%3Crect x='33' y='11' width='11' height='11'/%3E%3Crect x='0' y='22' width='11' height='11'/%3E%3Crect x='22' y='22' width='11' height='11'/%3E%3Crect x='11' y='33' width='11' height='11'/%3E%3Crect x='33' y='33' width='11' height='11'/%3E%3C/g%3E%3C/svg%3E");
-    }
     .perk-tag { align-self: flex-start; font-family: var(--font-mono); font-size: 0.7rem; background: var(--green-light); color: var(--green-curtain); padding: 4px 10px; border-radius: 4px; margin-bottom: 18px; font-weight: 700; position: relative; z-index: 1;}
     .perk-card h3 { font-family: var(--font-display); font-size: 1.65rem; font-weight: 700; margin-bottom: 10px; color: var(--ink-dark); position: relative; z-index: 1;}
     .perk-card p { font-size: 0.94rem; color: var(--ink-muted); margin-bottom: 0; position: relative; z-index: 1;}
 
     /* Galería Visual Masonry */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-auto-rows: 200px;
-      gap: 16px;
-      margin-top: 40px;
-    }
-    .gallery-item {
-      position: relative;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border-subtle);
-    }
-    .gallery-item img {
-      width: 100%; height: 100%; object-fit: cover;
-      transition: transform 0.5s ease;
-    }
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 200px; gap: 16px; margin-top: 40px; }
+    .gallery-item { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
     .gallery-item:hover img { transform: scale(1.05); }
     .gallery-item.large { grid-column: span 2; grid-row: span 2; }
     .gallery-item.tall { grid-row: span 2; }
@@ -274,6 +255,10 @@
     .bar-track { height: 8px; background: rgba(255,255,255,0.14); border-radius: 99px; overflow: hidden; }
     .bar-fill { height: 100%; background: var(--wood-oak); border-radius: 99px; }
 
+    .review-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+    .filter-chip { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 8px 16px; border-radius: 999px; font-size: 0.85rem; font-weight: 600; color: var(--ink-muted); cursor: pointer; transition: all 0.2s; font-family: var(--font-sans);}
+    .filter-chip.active, .filter-chip:hover { background: var(--ink-dark); color: #fff; border-color: var(--ink-dark); }
+
     .reviews-masonry { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 22px; }
     .review-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 16px 4px 16px 4px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;}
     .review-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; position: relative; z-index: 2;}
@@ -291,7 +276,7 @@
     .distance-place span { font-size: 0.83rem; color: var(--ink-muted); }
     .distance-time { font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700; color: var(--sant-joan-red); background: rgba(140, 35, 42, 0.08); padding: 6px 10px; border-radius: 6px; white-space: nowrap; }
     
-    .map-frame { border-radius: 12px; overflow: hidden; border: 2px solid var(--wood-oak); box-shadow: 8px 8px 0 rgba(52, 78, 59, 0.12); position: relative; min-height: 400px;}
+    .map-frame { border-radius: 12px; overflow: hidden; border: 2px solid var(--wood-oak); box-shadow: 8px 8px 0 rgba(52, 78, 59, 0.12); position: relative; min-height: 400px; z-index: 1;}
     #map { position: absolute; top:0; left:0; width: 100%; height: 100%; z-index: 1; }
     
     .custom-marker { background: var(--sant-joan-red); color: white; border: 2px solid white; border-radius: 50%; box-shadow: 0 3px 6px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; font-weight: bold; font-family: var(--font-sans); }
@@ -347,9 +332,9 @@
       <div style="font-size: 0.68rem;">40°00'N · 03°50'E</div>
     </div>
     <div class="travel-stamp travel-stamp--round stamp-3" data-stamp>
-      <span>PUNTO DE PARTIDA</span>
-      <strong style="font-size: 0.9rem; margin: 4px 0;">RUMBO A LA CALA</strong>
-      <span>&amp; AL DESCANSO</span>
+      <span data-i18n="stamp_start">PUNTO DE PARTIDA</span>
+      <strong style="font-size: 0.9rem; margin: 4px 0;" data-i18n="stamp_cove">RUMBO A LA CALA</strong>
+      <span data-i18n="stamp_rest">&amp; AL DESCANSO</span>
     </div>
   </div>
 
@@ -362,15 +347,15 @@
         <a href="tel:+34657399135">📱 657 39 91 35</a>
       </div>
       <div class="topbar-right">
-        <!-- Enlaces a archivos HTML separados por idioma -->
+        <!-- Traductor Instantáneo JS -->
         <div class="lang-switcher" role="group" aria-label="Selector de idioma">
-          <a href="index.html" class="lang-btn active">ES</a>
-          <a href="index_ca.html" class="lang-btn">CA</a>
-          <a href="index_en.html" class="lang-btn">EN</a>
-          <a href="index_fr.html" class="lang-btn">FR</a>
-          <a href="index_it.html" class="lang-btn">IT</a>
+          <button class="lang-btn active" onclick="setLang('es')">ES</button>
+          <button class="lang-btn" onclick="setLang('ca')">CA</button>
+          <button class="lang-btn" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" onclick="setLang('fr')">FR</button>
+          <button class="lang-btn" onclick="setLang('it')">IT</button>
         </div>
-        <button class="my-booking-trigger" onclick="toggleModal(true)">
+        <button class="my-booking-trigger" onclick="toggleModal(true)" data-i18n="nav_my_booking">
           🔑 Mi Reserva
         </button>
       </div>
@@ -389,13 +374,13 @@
       </a>
       <nav>
         <ul class="nav-links">
-          <li><a href="#esencia">El Hotel</a></li>
-          <li><a href="#galeria">Galería</a></li>
-          <li><a href="#billete">Reservar</a></li>
-          <li><a href="#resenas">Opiniones</a></li>
-          <li><a href="#ubicacion">Ubicación</a></li>
+          <li><a href="#esencia" data-i18n="nav_essence">El Hotel</a></li>
+          <li><a href="#galeria" data-i18n="nav_gallery">Galería</a></li>
+          <li><a href="#billete" data-i18n="nav_ticket">Reservar</a></li>
+          <li><a href="#resenas" data-i18n="nav_reviews">Opiniones</a></li>
+          <li><a href="#ubicacion" data-i18n="nav_location">Ubicación</a></li>
           <li>
-            <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener" class="btn-book-nav">
+            <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener" class="btn-book-nav" data-i18n="nav_book_cta">
               Consultar Disponibilidad
             </a>
           </li>
@@ -408,29 +393,29 @@
   <section class="hero reveal">
     <div class="hero-content">
       <div class="hero-badges">
-        <div class="rating-pill playful-hover-alt">
+        <div class="rating-pill hover-lift">
           <span class="rating-score">9,2</span>
-          <span><strong>Fantástico en Booking</strong> · 1.045 reseñas</span>
+          <span><strong data-i18n="badge_booking">Fantástico en Booking</strong> · 1.045 reseñas</span>
         </div>
-        <div class="rating-pill playful-hover-alt">
+        <div class="rating-pill hover-lift">
           <span class="rating-score rating-score--google">4,6 ★</span>
           <span><strong>Google Maps</strong> · 417 reseñas</span>
         </div>
       </div>
 
-      <h1>
+      <h1 data-i18n="hero_title">
         Dormir tranquilo a un paso del centro. <em>Despertar rumbo a la cala.</em>
       </h1>
 
-      <p class="hero-lead">
+      <p class="hero-lead" data-i18n="hero_subtitle">
         Un hotel de 30 habitaciones exteriores en una calle serena de Ciutadella. Habitaciones confortables, baños reformados y nuestro equipo siempre dispuesto a ayudarte a organizar tu día por la isla.
       </p>
 
       <div class="hero-actions">
-        <a href="#billete" class="btn-primary">
+        <a href="#billete" class="btn-primary" data-i18n="hero_cta_primary">
           🎟️ Reservar al mejor precio
         </a>
-        <a href="#resenas" class="btn-secondary">
+        <a href="#resenas" class="btn-secondary" data-i18n="hero_cta_secondary">
           Leer opiniones de huéspedes
         </a>
       </div>
@@ -438,15 +423,15 @@
       <div class="hero-micro-facts">
         <div class="micro-fact">
           <strong>9,8 / 10</strong>
-          <span>Ubicación céntrica (a 400m de la Catedral)</span>
+          <span data-i18n="fact_location">Ubicación céntrica (a 400m de la Catedral)</span>
         </div>
         <div class="micro-fact">
           <strong>9,6 / 10</strong>
-          <span>Atención personalizada y cercana</span>
+          <span data-i18n="fact_staff">Atención personalizada y cercana</span>
         </div>
         <div class="micro-fact">
           <strong>1 min</strong>
-          <span>Distancia a pie de la estación de autobuses</span>
+          <span data-i18n="fact_parking">Distancia a pie de la estación de autobuses</span>
         </div>
       </div>
     </div>
@@ -455,18 +440,18 @@
       <div class="postmark-badge">
         <span>MENORCA</span>
         <strong style="font-size: 0.9rem; margin: 2px 0;">100% REAL</strong>
-        <span>TRATO CERCANO</span>
+        <span data-i18n="postmark_close">TRATO CERCANO</span>
       </div>
-      <div class="postcard-main mosaic-bg-subtle playful-hover">
+      <div class="postcard-main mosaic-bg-subtle hover-lift">
         <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383553.jpg?k=2c0d950402c170b0e9f2b7b86fd96978dbdb9060557fac224faf57dd23cb156c&o=&hp=1" alt="Piscina y exterior del Hotel Géminis en Ciutadella">
         <div class="postcard-caption">
-          <span>FIG 01. PISCINA Y SOLÁRIUM</span>
+          <span data-i18n="cap_pool">FIG 01. PISCINA Y SOLÁRIUM</span>
           <span>CIUTADELLA · 07760</span>
         </div>
       </div>
-      <div class="postcard-floating">
+      <div class="postcard-floating hover-lift">
         <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383478.jpg?k=c7574c32166f3e401533dd6d76174292beaa238508466b8b6ef13c3bfefd3fc2&o=&hp=1" alt="Habitación exterior del Hotel Géminis">
-        <span>HABITACIÓN EXTERIOR</span>
+        <span data-i18n="cap_room">HABITACIÓN EXTERIOR</span>
       </div>
     </div>
   </section>
@@ -476,50 +461,50 @@
   <!-- LA CASA Y SERVICIOS -->
   <section id="esencia" class="section reveal">
     <div class="section-header">
-      <span class="eyebrow">Hospitalidad de verdad, sin artificios</span>
-      <h2 class="section-title">Las cosas que te facilitan las vacaciones en Menorca</h2>
-      <p class="section-desc">
+      <span class="eyebrow" data-i18n="essence_eyebrow">Hospitalidad de verdad, sin artificios</span>
+      <h2 class="section-title" data-i18n="essence_title">Las cosas que te facilitan las vacaciones en Menorca</h2>
+      <p class="section-desc" data-i18n="essence_desc">
         Nuestros huéspedes repiten porque valoran tener una base cómoda, limpia y tranquila. Un lugar donde descansar y salir por la mañana con todo listo para disfrutar de la isla.
       </p>
     </div>
 
     <div class="perks-grid">
-      <article class="perk-card mosaic-bg-subtle playful-hover-alt">
+      <article class="perk-card mosaic-bg-subtle hover-lift">
         <div>
-          <span class="perk-tag">CAFETERÍA Y DESAYUNOS</span>
-          <h3>El primer café del día (y opciones para llevar)</h3>
-          <p>
-            Café, tostadas y la clásica ensaimada para coger fuerzas. Si sales temprano de excursión, en cafetería podemos prepararte bocadillos para llevar a la playa.
+          <span class="perk-tag" data-i18n="perk1_tag">CAFETERÍA Y DESAYUNOS</span>
+          <h3 data-i18n="perk1_title">El primer café del día (y opciones para llevar)</h3>
+          <p data-i18n="perk1_body">
+            Café recién hecho, tostadas y la clásica ensaimada para coger fuerzas. Si sales temprano de excursión, en cafetería podemos prepararte bocadillos para llevar a la playa.
           </p>
         </div>
       </article>
 
-      <article class="perk-card mosaic-bg-subtle playful-hover-alt">
+      <article class="perk-card mosaic-bg-subtle hover-lift">
         <div>
-          <span class="perk-tag">SERVICIOS PRÁCTICOS</span>
-          <h3>Preparados para la cala</h3>
-          <p>
+          <span class="perk-tag" data-i18n="perk2_tag">SERVICIOS PRÁCTICOS</span>
+          <h3 data-i18n="perk2_title">Preparados para la cala</h3>
+          <p data-i18n="perk2_body">
             Sabemos qué necesitas para un día de sol: disponemos de botellas de agua congelada y ofrecemos servicio de préstamo de sombrillas bajo petición (sujeto a disponibilidad).
           </p>
         </div>
       </article>
 
-      <article class="perk-card mosaic-bg-subtle playful-hover-alt">
+      <article class="perk-card mosaic-bg-subtle hover-lift">
         <div>
-          <span class="perk-tag">ATENCIÓN CERCANA · 9,6/10</span>
-          <h3>El parte del viento cada mañana</h3>
-          <p>
+          <span class="perk-tag" data-i18n="perk3_tag">ATENCIÓN CERCANA · 9,6/10</span>
+          <h3 data-i18n="perk3_title">El parte del viento cada mañana</h3>
+          <p data-i18n="perk3_body">
             En Menorca el viento manda. Nuestro equipo de recepción te indicará mapa en mano qué costa visitar cada día para encontrar el mar en calma y te sugerirá lugares locales para cenar.
           </p>
         </div>
       </article>
 
-      <article class="perk-card mosaic-bg-subtle playful-hover-alt">
+      <article class="perk-card mosaic-bg-subtle hover-lift">
         <div>
-          <span class="perk-tag">EN EL CENTRO DE CIUTADELLA</span>
-          <h3>A un paso del casco antiguo</h3>
-          <p>
-            Estamos a 5 minutos a pie de la Catedral. Aunque el aparcamiento en la puerta es limitado por estar céntricos, hay amplios parkings públicos a pocos minutos caminando.
+          <span class="perk-tag" data-i18n="perk4_tag">EN EL CENTRO DE CIUTADELLA</span>
+          <h3 data-i18n="perk4_title">A un paso del casco antiguo</h3>
+          <p data-i18n="perk4_body">
+            Estamos a 5 minutos a pie de la Catedral. Aunque el aparcamiento en la puerta es limitado por estar céntricos, hay parkings públicos a pocos minutos caminando.
           </p>
         </div>
       </article>
@@ -529,38 +514,33 @@
   <!-- GALERÍA (NUEVO DISEÑO MASONRY) -->
   <section id="galeria" class="section reveal" style="padding-top: 20px;">
     <div class="section-header" style="max-width: 100%; text-align: center;">
-      <span class="eyebrow" style="justify-content: center;">Limpieza 9,5 · Confort 9,5</span>
-      <h2 class="section-title">Habitaciones exteriores, cálidas y reformadas</h2>
-      <p class="section-desc" style="max-width: 600px; margin: 0 auto;">
+      <span class="eyebrow" style="justify-content: center;" data-i18n="gallery_eyebrow">Limpieza 9,5 · Confort 9,5</span>
+      <h2 class="section-title" data-i18n="gallery_title">Habitaciones exteriores, cálidas y reformadas</h2>
+      <p class="section-desc" style="max-width: 600px; margin: 0 auto;" data-i18n="gallery_desc">
         Espacios luminosos y funcionales pensados para el descanso. Mobiliario en madera natural, climatización y cuartos de baño renovados con duchas amplias.
       </p>
     </div>
 
     <div class="gallery-grid">
-      <!-- Habitación principal -->
-      <div class="gallery-item large">
+      <div class="gallery-item large hover-lift">
         <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383481.jpg?k=72462aaa2a4947701b17a26accaf3c3e1a50e5ce6c2dcc360813d02c59976c7f&o=&hp=1" alt="Habitación Doble Exterior">
       </div>
-      <!-- Baño reformado -->
-      <div class="gallery-item tall">
+      <div class="gallery-item tall hover-lift">
         <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383519.jpg?k=511707f42286a2e7e3d69831c3dbb66a6a2dbda404619c4483632087a6fa924a&o=&hp=1" alt="Baño reformado con ducha">
       </div>
-      <!-- Exterior piscina -->
-      <div class="gallery-item">
+      <div class="gallery-item hover-lift">
         <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383566.jpg?k=12de919c6ca7b1ba0db6d9eea36580af1b9bd483b33ebaad08571c9d9469bdab&o=&hp=1" alt="Piscina y solárium">
       </div>
-      <!-- Cafetería / Desayuno -->
-      <div class="gallery-item wide">
+      <div class="gallery-item wide hover-lift">
         <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383597.jpg?k=fcbcdc9d4f0e69206efa755bc2238d574bb0247cf54d05fde81c800b32633fca&o=&hp=1" alt="Cafetería del Hotel Géminis">
       </div>
-      <!-- Detalle habitación -->
-      <div class="gallery-item">
+      <div class="gallery-item hover-lift">
         <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383544.jpg?k=b48d2f84ff665d6a457951e80cac17bc78c56e0232aad4653812f4627c2251d1&o=&hp=1" alt="Detalle de habitación">
       </div>
     </div>
     
     <div style="text-align: center; margin-top: 36px;">
-      <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener" class="btn-primary">
+      <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener" class="btn-primary" data-i18n="rooms_cta">
         Comprobar disponibilidad de habitaciones →
       </a>
     </div>
@@ -572,22 +552,21 @@
   <section id="billete" class="ticket-section reveal">
     <div class="ticket-container">
       <div class="section-header" style="margin-bottom: 36px;">
-        <span class="eyebrow">Sin comisiones de intermediarios</span>
-        <h2 class="section-title">Asegura tu estancia directamente con nosotros</h2>
-        <p class="section-desc">
+        <span class="eyebrow" data-i18n="ticket_eyebrow">Sin comisiones de intermediarios</span>
+        <h2 class="section-title" data-i18n="ticket_title">Asegura tu estancia directamente con nosotros</h2>
+        <p class="section-desc" data-i18n="ticket_desc">
           Reservando a través de nuestra web oficial accedes a nuestra disponibilidad real, al mejor precio garantizado y a condiciones de cancelación más flexibles.
         </p>
       </div>
 
       <div class="boarding-pass">
-        <!-- Parte Izquierda -->
         <div class="ticket-main mosaic-bg-subtle">
           <div>
             <div class="ticket-top-bar">
               <div class="ticket-airline">
                 <span>✈️ / ⛴️ BOARDING PASS · HOTEL GÉMINIS</span>
               </div>
-              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--sant-joan-red); font-weight: 700;">
+              <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--sant-joan-red); font-weight: 700;" data-i18n="tick_direct">
                 TARIFA DIRECTA
               </span>
             </div>
@@ -595,7 +574,7 @@
             <div class="ticket-route">
               <div>
                 <div class="route-code">ORG</div>
-                <div class="route-city">Tú Eliges</div>
+                <div class="route-city" data-i18n="ticket_origin">Tú Eliges</div>
               </div>
               <div class="route-plane">MENORCA · CIUTADELLA</div>
               <div style="text-align: right;">
@@ -606,28 +585,27 @@
 
             <div class="ticket-details">
               <div class="ticket-info-block">
-                <span>TIPO DE BILLETE</span>
-                <strong>OPEN PASS WEB</strong>
+                <span data-i18n="tick_class">TIPO DE BILLETE</span>
+                <strong data-i18n="tick_open">OPEN PASS WEB</strong>
               </div>
               <div class="ticket-info-block">
-                <span>FECHAS</span>
-                <strong>ELEGIR EN PORTAL</strong>
+                <span data-i18n="tick_dates">FECHAS</span>
+                <strong data-i18n="tick_portal">ELEGIR EN PORTAL</strong>
               </div>
               <div class="ticket-info-block">
-                <span>HUÉSPEDES</span>
-                <strong>ELEGIR EN PORTAL</strong>
+                <span data-i18n="tick_guests">HUÉSPEDES</span>
+                <strong data-i18n="tick_portal2">ELEGIR EN PORTAL</strong>
               </div>
             </div>
           </div>
 
           <div class="ticket-perks-strip">
-            <span>✓ Mejor Precio Garantizado</span>
-            <span>✓ Pago seguro 100% oficial</span>
-            <span>✓ Confirmación inmediata</span>
+            <span data-i18n="ticket_perk1">✓ Mejor Precio Garantizado</span>
+            <span data-i18n="ticket_perk2">✓ Pago seguro 100% oficial</span>
+            <span data-i18n="ticket_perk3">✓ Confirmación inmediata</span>
           </div>
         </div>
 
-        <!-- Resguardo Cortable -->
         <div class="ticket-stub" id="ticket-stub" onclick="tearTicketAndBook()">
           <div class="scissors-icon" title="Cortar billete">✂</div>
           <div>
@@ -635,10 +613,10 @@
               <span>GATE: DIRECT</span>
               <span>SEAT: 30 EXT</span>
             </div>
-            <h3 style="font-family: var(--font-display); font-size: 1.75rem; margin: 10px 0 6px; color: var(--ink-dark);">
+            <h3 style="font-family: var(--font-display); font-size: 1.75rem; margin: 10px 0 6px; color: var(--ink-dark);" data-i18n="stub_title">
               Pase de Reserva
             </h3>
-            <p style="font-size: 0.83rem; color: var(--ink-muted);">
+            <p style="font-size: 0.83rem; color: var(--ink-muted);" data-i18n="stub_subtitle">
               Accede al portal oficial GuestPro del Hotel Géminis.
             </p>
             <div class="barcode" aria-hidden="true"></div>
@@ -647,7 +625,7 @@
             </div>
           </div>
 
-          <button type="button" class="btn-tear" id="btn-tear-label">
+          <button type="button" class="btn-tear" id="btn-tear-label" data-i18n="stub_btn">
             ✂️ Cortar y ver fechas
           </button>
         </div>
@@ -658,82 +636,88 @@
   <!-- RESEÑAS -->
   <section id="resenas" class="section reveal">
     <div class="section-header">
-      <span class="eyebrow">1.045 comentarios en Booking · 417 en Google</span>
-      <h2 class="section-title">Agradecemos la confianza de cada huésped</h2>
-      <p class="section-desc">
-        Agradecemos profundamente nuestra valoración. Nuestro objetivo diario es ofrecerte un espacio limpio, un buen descanso y sugerencias sinceras para que disfrutes de la isla.
+      <span class="eyebrow" data-i18n="reviews_eyebrow">1.045 comentarios en Booking · 417 en Google</span>
+      <h2 class="section-title" data-i18n="reviews_title">Agradecemos la confianza de cada huésped</h2>
+      <p class="section-desc" data-i18n="reviews_desc">
+        Nuestro objetivo diario es ofrecerte un espacio limpio, un buen descanso y sugerencias sinceras para que disfrutes de la isla.
       </p>
     </div>
 
     <div class="reviews-dashboard">
       <div class="score-giant-box">
         <div class="score-giant">9,2</div>
-        <span class="score-giant-label">Fantástico</span>
-        <p style="font-size: 0.84rem; opacity: 0.85;">
-          Basado en 1.045 estancias reales verificadas en Booking.com y 4,6/5 en Google Maps.
+        <span class="score-giant-label" data-i18n="score_fantastic">Fantástico</span>
+        <p style="font-size: 0.84rem; opacity: 0.85;" data-i18n="score_verified">
+          Basado en 1.045 estancias verificadas en Booking y 4,6/5 en Google.
         </p>
       </div>
 
       <div class="score-bars">
         <div class="score-bar-item">
-          <div class="score-bar-top"><span>Ubicación</span><span>9,8</span></div>
+          <div class="score-bar-top"><span data-i18n="cat_location">Ubicación</span><span>9,8</span></div>
           <div class="bar-track"><div class="bar-fill" style="width: 98%;"></div></div>
         </div>
         <div class="score-bar-item">
-          <div class="score-bar-top"><span>Personal</span><span>9,6</span></div>
+          <div class="score-bar-top"><span data-i18n="cat_staff">Personal</span><span>9,6</span></div>
           <div class="bar-track"><div class="bar-fill" style="width: 96%;"></div></div>
         </div>
         <div class="score-bar-item">
-          <div class="score-bar-top"><span>Limpieza</span><span>9,5</span></div>
+          <div class="score-bar-top"><span data-i18n="cat_clean">Limpieza</span><span>9,5</span></div>
           <div class="bar-track"><div class="bar-fill" style="width: 95%;"></div></div>
         </div>
         <div class="score-bar-item">
-          <div class="score-bar-top"><span>Confort</span><span>9,5</span></div>
+          <div class="score-bar-top"><span data-i18n="cat_comfort">Confort</span><span>9,5</span></div>
           <div class="bar-track"><div class="bar-fill" style="width: 95%;"></div></div>
         </div>
         <div class="score-bar-item">
-          <div class="score-bar-top"><span>Relación calidad-precio</span><span>9,3</span></div>
+          <div class="score-bar-top"><span data-i18n="cat_value">Calidad-precio</span><span>9,3</span></div>
           <div class="bar-track"><div class="bar-fill" style="width: 93%;"></div></div>
         </div>
         <div class="score-bar-item">
-          <div class="score-bar-top"><span>Instalaciones y servicios</span><span>9,0</span></div>
+          <div class="score-bar-top"><span data-i18n="cat_facilities">Instalaciones</span><span>9,0</span></div>
           <div class="bar-track"><div class="bar-fill" style="width: 90%;"></div></div>
         </div>
       </div>
     </div>
 
-    <div class="reviews-masonry">
-      <article class="review-card mosaic-bg-subtle playful-hover-alt">
+    <div class="review-filters">
+      <button class="filter-chip active" onclick="filterReviews('all', this)" data-i18n="filter_all">Todas las reseñas</button>
+      <button class="filter-chip" onclick="filterReviews('staff', this)" data-i18n="filter_staff">Atención en Recepción</button>
+      <button class="filter-chip" onclick="filterReviews('comfort', this)" data-i18n="filter_clean">Limpieza y Descanso</button>
+    </div>
+
+    <div class="reviews-masonry" id="reviews-grid">
+      <article class="review-card mosaic-bg-subtle hover-lift" data-category="comfort">
         <div style="position:relative; z-index:2;">
           <div class="review-card-header">
             <div class="reviewer-info">
               <strong>Adriana · España</strong>
-              <span>Octubre 2026 · 4 noches</span>
+              <span data-i18n="rev_adr_date">Octubre · 4 noches</span>
             </div>
             <span class="review-badge">10 / 10</span>
           </div>
-          <p class="review-text">
+          <p class="review-text" data-i18n="rev_adr_txt">
             “Ha sido maravillosa. <span class="review-highlight">El baño era muy moderno y estaba extra limpio.</span> No tengo nada que objetar, para ser una habitación de hotel era muy cómoda.”
           </p>
         </div>
       </article>
 
-      <article class="review-card mosaic-bg-subtle playful-hover-alt">
+      <article class="review-card mosaic-bg-subtle hover-lift" data-category="comfort">
         <div style="position:relative; z-index:2;">
           <div class="review-card-header">
             <div class="reviewer-info">
               <strong>Belén · España</strong>
-              <span>Septiembre 2026</span>
+              <span data-i18n="rev_bel_date">Septiembre</span>
             </div>
             <span class="review-badge">10 / 10</span>
           </div>
-          <p class="review-text">
+          <p class="review-text" data-i18n="rev_bel_txt">
             “Prácticamente pegado al casco antiguo de Ciutadella. <span class="review-highlight">Muy limpio, muy cómodo y cuenta con servicio de desayuno y bocadillos.</span> También el personal es muy agradable y nos dio muchas recomendaciones.”
           </p>
         </div>
       </article>
 
-      <article class="review-card mosaic-bg-subtle playful-hover-alt">
+      <article class="review-card mosaic-bg-subtle hover-lift" data-category="staff">
         <div style="position:relative; z-index:2;">
           <div class="review-card-header">
             <div class="reviewer-info">
@@ -742,22 +726,22 @@
             </div>
             <span class="review-badge">5 / 5 ★</span>
           </div>
-          <p class="review-text">
+          <p class="review-text" data-i18n="rev_jud_txt">
             “¡Merece más estrellas de las que tiene! Súper bien ubicado, limpieza 100%, <span class="review-highlight">los responsables de recepción y cafetería una maravilla de amables</span> y serviciales. ¡Repetiremos!”
           </p>
         </div>
       </article>
 
-      <article class="review-card mosaic-bg-subtle playful-hover-alt">
+      <article class="review-card mosaic-bg-subtle hover-lift" data-category="staff">
         <div style="position:relative; z-index:2;">
           <div class="review-card-header">
             <div class="reviewer-info">
               <strong>Alejandra Hervás</strong>
-              <span>Septiembre 2026</span>
+              <span data-i18n="rev_ale_date">Septiembre</span>
             </div>
             <span class="review-badge">10 / 10</span>
           </div>
-          <p class="review-text">
+          <p class="review-text" data-i18n="rev_ale_txt">
             “Han sido encantadores, <span class="review-highlight">toda la familia que regenta el hotel es maravillosa.</span> Nos han ayudado en todo, recomendaciones de playa y restaurantes... súper hospitalarios.”
           </p>
         </div>
@@ -769,35 +753,35 @@
   <section id="ubicacion" class="section reveal" style="padding-top: 20px;">
     <div class="location-grid">
       <div>
-        <span class="eyebrow">C/ Josepa Rossinyol, 4 · 07760 Ciutadella</span>
-        <h2 class="section-title">Tu punto de partida en la ciudad</h2>
-        <p class="section-desc">
+        <span class="eyebrow" data-i18n="loc_eyebrow">C/ Josepa Rossinyol, 4 · 07760 Ciutadella</span>
+        <h2 class="section-title" data-i18n="loc_title">Tu punto de partida en la ciudad</h2>
+        <p class="section-desc" data-i18n="loc_desc">
           Al estar situados a escasos pasos del casco antiguo, el aparcamiento en la misma puerta es limitado. No obstante, estamos rodeados de parkings públicos a pocos minutos a pie y junto a la estación principal de autobuses.
         </p>
 
         <div class="distance-list">
-          <div class="distance-item playful-hover-alt">
+          <div class="distance-item hover-lift">
             <div class="distance-place">
-              <strong>Estación de Autobuses (Via Plaza dels Pins)</strong>
-              <span>Conexión a las calas del sur, norte y Maó</span>
+              <strong data-i18n="dist1_title">Estación de Autobuses (Via Plaza dels Pins)</strong>
+              <span data-i18n="dist1_desc">Conexión a las calas del sur, norte y Maó</span>
             </div>
-            <span class="distance-time">1 min a pie</span>
+            <span class="distance-time" data-i18n="dist1_time">1 min a pie</span>
           </div>
 
-          <div class="distance-item playful-hover-alt">
+          <div class="distance-item hover-lift">
             <div class="distance-place">
-              <strong>Aparcamientos Públicos</strong>
-              <span>Bolsas de aparcamiento gratuito en las inmediaciones</span>
+              <strong data-i18n="dist2_title">Aparcamientos Públicos</strong>
+              <span data-i18n="dist2_desc">Bolsas de aparcamiento gratuito en las inmediaciones</span>
             </div>
-            <span class="distance-time">~ 3 min a pie</span>
+            <span class="distance-time" data-i18n="dist2_time">~ 3 min a pie</span>
           </div>
 
-          <div class="distance-item playful-hover-alt">
+          <div class="distance-item hover-lift">
             <div class="distance-place">
-              <strong>Catedral y Casco Antiguo</strong>
-              <span>Ses Voltes, comercios locales y restaurantes</span>
+              <strong data-i18n="dist3_title">Catedral y Casco Antiguo</strong>
+              <span data-i18n="dist3_desc">Ses Voltes, comercios locales y restaurantes</span>
             </div>
-            <span class="distance-time">400 m (4 min)</span>
+            <span class="distance-time" data-i18n="dist3_time">400 m (4 min)</span>
           </div>
         </div>
       </div>
@@ -813,19 +797,19 @@
     <div class="modal-box mosaic-bg-subtle">
       <button class="modal-close" onclick="toggleModal(false)" aria-label="Cerrar">×</button>
       <span class="eyebrow">GUESTPRO · HOTEL GÉMINIS</span>
-      <h3 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 8px;">Accede a tu reserva</h3>
-      <p style="font-size: 0.88rem; color: var(--ink-muted); margin-bottom: 20px;">
+      <h3 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 8px;" data-i18n="modal_title">Accede a tu reserva</h3>
+      <p style="font-size: 0.88rem; color: var(--ink-muted); margin-bottom: 20px;" data-i18n="modal_desc">
         Consulta o gestiona tu estancia directamente en nuestro portal oficial.
       </p>
       <div style="margin-bottom: 14px;">
-        <label for="modal-email" style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-muted);">EMAIL DE CONFIRMACIÓN</label>
+        <label for="modal-email" style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-muted);" data-i18n="modal_email">EMAIL DE CONFIRMACIÓN</label>
         <input type="email" id="modal-email" class="form-input" placeholder="tu@email.com">
       </div>
       <div style="margin-bottom: 24px;">
-        <label for="modal-voucher" style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-muted);">CÓDIGO LOCALIZADOR</label>
+        <label for="modal-voucher" style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-muted);" data-i18n="modal_voucher">CÓDIGO LOCALIZADOR</label>
         <input type="text" id="modal-voucher" class="form-input" placeholder="Ej. GEM-2027...">
       </div>
-      <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener" class="btn-primary" style="width: 100%; justify-content: center;">
+      <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener" class="btn-primary" style="width: 100%; justify-content: center;" data-i18n="modal_btn">
         Ir al portal GuestPro →
       </a>
     </div>
@@ -845,18 +829,18 @@
       </div>
 
       <div class="footer-col">
-        <h4>Navegación</h4>
-        <a href="#esencia">El Hotel</a>
-        <a href="#galeria">Galería y Habitaciones</a>
-        <a href="#resenas">Opiniones Reales</a>
-        <a href="#ubicacion">Cómo llegar</a>
-        <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener">Disponibilidad y Precios</a>
+        <h4 data-i18n="footer_nav">Navegación</h4>
+        <a href="#esencia" data-i18n="nav_essence">El Hotel</a>
+        <a href="#galeria" data-i18n="nav_gallery">Galería y Habitaciones</a>
+        <a href="#resenas" data-i18n="nav_reviews">Opiniones Reales</a>
+        <a href="#ubicacion" data-i18n="nav_location">Cómo llegar</a>
+        <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener" data-i18n="nav_book_cta">Disponibilidad y Precios</a>
       </div>
 
       <div class="footer-col">
-        <h4>Reserva Directa</h4>
-        <p>Mejor tarifa garantizada en nuestra web oficial.</p>
-        <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener" style="color: var(--wood-oak); font-weight: 700; margin-top: 10px;">
+        <h4 data-i18n="footer_direct">Reserva Directa</h4>
+        <p data-i18n="footer_desc">Mejor tarifa garantizada en nuestra web oficial.</p>
+        <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener" style="color: var(--wood-oak); font-weight: 700; margin-top: 10px;" data-i18n="footer_panel">
           → Panel Oficial GuestPro
         </a>
         <div style="margin-top: 16px;">
@@ -873,7 +857,7 @@
   </footer>
 
   <!-- LEAFLET MAP JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   
   <script>
     // 1. SCROLL REVEAL ANIMATIONS
@@ -882,34 +866,37 @@
       for (var i = 0; i < reveals.length; i++) {
         var windowHeight = window.innerHeight;
         var elementTop = reveals[i].getBoundingClientRect().top;
-        var elementVisible = 100;
+        var elementVisible = 80;
         if (elementTop < windowHeight - elementVisible) {
           reveals[i].classList.add("active");
         }
       }
     }
     window.addEventListener("scroll", reveal);
-    reveal(); // Trigger on load
+    reveal();
 
-    // 2. INICIALIZAR MAPA LEAFLET
+    // 2. MAPA LEAFLET (SAFE OSM TILE LAYER)
     document.addEventListener("DOMContentLoaded", function() {
       const mapEl = document.getElementById('map');
       if(mapEl) {
-        // Coordenadas aproximadas Hotel Géminis
-        var map = L.map('map').setView([40.0008, 3.8378], 16);
-        
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>',
-          maxZoom: 19
-        }).addTo(map);
+        // Inicializamos con un pequeño retardo para evitar fallos de renderizado
+        setTimeout(() => {
+            var map = L.map('map').setView([40.0008, 3.8378], 16);
+            
+            // Servidor libre de OpenStreetMap (No requiere API key)
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              maxZoom: 19,
+              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
 
-        var hotelIcon = L.divIcon({ className: 'custom-marker custom-marker-hotel', html: 'H', iconSize: [34, 34], iconAnchor: [17, 17] });
-        var pIcon = L.divIcon({ className: 'custom-marker', html: 'P', iconSize: [24, 24], iconAnchor: [12, 12] });
-        var busIcon = L.divIcon({ className: 'custom-marker', html: 'B', iconSize: [24, 24], iconAnchor: [12, 12] });
+            var hotelIcon = L.divIcon({ className: 'custom-marker custom-marker-hotel', html: 'H', iconSize: [34, 34], iconAnchor: [17, 17] });
+            var pIcon = L.divIcon({ className: 'custom-marker', html: 'P', iconSize: [24, 24], iconAnchor: [12, 12] });
+            var busIcon = L.divIcon({ className: 'custom-marker', html: 'B', iconSize: [24, 24], iconAnchor: [12, 12] });
 
-        L.marker([40.0008, 3.8378], {icon: hotelIcon}).addTo(map).bindPopup('<b>Hotel Géminis</b><br>C/ Josepa Rossinyol, 4').openPopup();
-        L.marker([40.0016, 3.8351], {icon: busIcon}).addTo(map).bindPopup('Estación de Autobuses');
-        L.marker([40.0035, 3.8380], {icon: pIcon}).addTo(map).bindPopup('Aparcamiento Público');
+            L.marker([40.0008, 3.8378], {icon: hotelIcon}).addTo(map).bindPopup('<b>Hotel Géminis</b><br>C/ Josepa Rossinyol, 4').openPopup();
+            L.marker([40.0016, 3.8351], {icon: busIcon}).addTo(map).bindPopup('Estación de Autobuses (Plaza dels Pins)');
+            L.marker([40.0035, 3.8380], {icon: pIcon}).addTo(map).bindPopup('Aparcamiento Público');
+        }, 500);
       }
     });
 
@@ -918,12 +905,13 @@
       const stub = document.getElementById('ticket-stub');
       const btn = document.getElementById('btn-tear-label');
       stub.classList.add('torn');
+      const originalText = btn.textContent;
       btn.textContent = '✓ Redirigiendo...';
       setTimeout(() => {
         window.open('https://admin.guestpro.com/es/book/geminis', '_blank', 'noopener');
         setTimeout(() => {
           stub.classList.remove('torn');
-          btn.textContent = '✂️ Cortar y ver fechas';
+          btn.textContent = originalText;
         }, 1800);
       }, 550);
     }
@@ -933,7 +921,20 @@
       document.getElementById('booking-modal').classList.toggle('open', show);
     }
 
-    // 5. EFECTO SELLOS SCROLL
+    // 5. RESEÑAS
+    function filterReviews(category, btnEl) {
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      btnEl.classList.add('active');
+      document.querySelectorAll('.review-card').forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // 6. EFECTO SELLOS SCROLL
     const stamps = document.querySelectorAll('[data-stamp]');
     window.addEventListener('scroll', () => {
       const scrollY = window.scrollY;
@@ -946,6 +947,92 @@
       });
     }, { passive: true });
     setTimeout(() => stamps[0]?.classList.add('stamped'), 400);
+
+    // 7. SISTEMA DE TRADUCCIÓN INSTANTÁNEA POR JS (A PRUEBA DE BALAS)
+    const i18n = {
+      es: {
+        nav_my_booking: "🔑 Mi Reserva", nav_essence: "El Hotel", nav_gallery: "Galería", nav_rooms: "Habitaciones", nav_ticket: "Reservar", nav_reviews: "Opiniones", nav_location: "Ubicación", nav_book_cta: "Consultar Disponibilidad",
+        badge_booking: "Fantástico en Booking",
+        hero_title: "Dormir tranquilo a un paso del centro. <em>Despertar rumbo a la cala.</em>",
+        hero_subtitle: "Un hotel de 30 habitaciones exteriores en una calle serena de Ciutadella. Habitaciones confortables, baños reformados y nuestro equipo siempre dispuesto a ayudarte a organizar tu día por la isla.",
+        hero_cta_primary: "🎟️ Reservar al mejor precio", hero_cta_secondary: "Leer opiniones de huéspedes",
+        fact_location: "Ubicación céntrica (a 400m de la Catedral)", fact_staff: "Atención personalizada y cercana", fact_parking: "Distancia a pie de la estación de autobuses",
+        postmark_close: "TRATO CERCANO", cap_pool: "FIG 01. PISCINA Y SOLÁRIUM", cap_room: "HABITACIÓN EXTERIOR",
+        essence_eyebrow: "Hospitalidad de verdad, sin artificios", essence_title: "Las cosas que te facilitan las vacaciones en Menorca", essence_desc: "Nuestros huéspedes repiten porque valoran tener una base cómoda, limpia y tranquila. Un lugar donde descansar y salir por la mañana con todo listo para disfrutar de la isla.",
+        perk1_tag: "CAFETERÍA Y DESAYUNOS", perk1_title: "El primer café del día (y opciones para llevar)", perk1_body: "Café recién hecho, tostadas y la clásica ensaimada para coger fuerzas. Si sales temprano de excursión, en cafetería podemos prepararte bocadillos para llevar a la playa.",
+        perk2_tag: "SERVICIOS PRÁCTICOS", perk2_title: "Preparados para la cala", perk2_body: "Sabemos qué necesitas para un día de sol: disponemos de botellas de agua congelada y ofrecemos servicio de préstamo de sombrillas bajo petición (sujeto a disponibilidad).",
+        perk3_tag: "ATENCIÓN CERCANA · 9,6/10", perk3_title: "El parte del viento cada mañana", perk3_body: "En Menorca el viento manda. Nuestro equipo de recepción te indicará mapa en mano qué costa visitar cada día para encontrar el mar en calma y te sugerirá lugares locales para cenar.",
+        perk4_tag: "EN EL CENTRO DE CIUTADELLA", perk4_title: "A un paso del casco antiguo", perk4_body: "Estamos a 5 minutos a pie de la Catedral. Aunque el aparcamiento en la puerta es limitado por estar céntricos, hay parkings públicos a pocos minutos caminando.",
+        gallery_eyebrow: "Limpieza 9,5 · Confort 9,5", gallery_title: "Habitaciones exteriores, cálidas y reformadas", gallery_desc: "Espacios luminosos y funcionales pensados para el descanso. Mobiliario en madera natural, climatización y cuartos de baño renovados con duchas amplias.", rooms_cta: "Comprobar disponibilidad de habitaciones →",
+        ticket_eyebrow: "Sin comisiones de intermediarios", ticket_title: "Asegura tu estancia directamente con nosotros", ticket_desc: "Reservando a través de nuestra web oficial accedes a nuestra disponibilidad real, al mejor precio garantizado y a condiciones de cancelación más flexibles.",
+        tick_direct: "TARIFA DIRECTA", ticket_origin: "Tú Eliges", tick_class: "TIPO DE BILLETE", tick_open: "OPEN PASS WEB", tick_dates: "FECHAS", tick_portal: "ELEGIR EN PORTAL", tick_guests: "HUÉSPEDES", tick_portal2: "ELEGIR EN PORTAL",
+        ticket_perk1: "✓ Mejor Precio Garantizado", ticket_perk2: "✓ Pago seguro 100% oficial", ticket_perk3: "✓ Confirmación inmediata",
+        stub_title: "Pase de Reserva", stub_subtitle: "Accede al portal oficial GuestPro del Hotel Géminis.", stub_btn: "✂️ Cortar y ver fechas",
+        reviews_eyebrow: "1.045 comentarios en Booking · 417 en Google", reviews_title: "Agradecemos la confianza de cada huésped", reviews_desc: "Nuestro objetivo diario es ofrecerte un espacio limpio, un buen descanso y sugerencias sinceras para que disfrutes de la isla.",
+        score_fantastic: "Fantástico", score_verified: "Basado en 1.045 estancias verificadas en Booking y 4,6/5 en Google.",
+        cat_location: "Ubicación", cat_staff: "Personal", cat_clean: "Limpieza", cat_comfort: "Confort", cat_value: "Calidad-precio", cat_facilities: "Instalaciones",
+        filter_all: "Todas las reseñas", filter_staff: "Atención en Recepción", filter_clean: "Limpieza y Descanso",
+        rev_adr_date: "Octubre · 4 noches", rev_adr_txt: "“Ha sido maravillosa. <span class='review-highlight'>El baño era muy moderno y estaba extra limpio.</span> No tengo nada que objetar, para ser una habitación de hotel era muy cómoda.”",
+        rev_bel_date: "Septiembre", rev_bel_txt: "“Prácticamente pegado al casco antiguo de Ciutadella. <span class='review-highlight'>Muy limpio, muy cómodo y cuenta con servicio de desayuno y bocadillos.</span> También el personal es muy agradable y nos dio muchas recomendaciones.”",
+        rev_jud_txt: "“¡Merece más estrellas de las que tiene! Súper bien ubicado, limpieza 100%, <span class='review-highlight'>los responsables de recepción y cafetería una maravilla de amables</span> y serviciales. ¡Repetiremos!”",
+        rev_ale_date: "Septiembre", rev_ale_txt: "“Han sido encantadores, <span class='review-highlight'>toda la familia que regenta el hotel es maravillosa.</span> Nos han ayudado en todo, recomendaciones de playa y restaurantes... súper hospitalarios.”",
+        loc_eyebrow: "C/ Josepa Rossinyol, 4 · 07760 Ciutadella", loc_title: "Tu punto de partida en la ciudad", loc_desc: "Al estar situados a escasos pasos del casco antiguo, el aparcamiento en la misma puerta es limitado. No obstante, estamos rodeados de parkings públicos a pocos minutos a pie y junto a la estación principal de autobuses.",
+        dist1_title: "Estación de Autobuses (Via Plaza dels Pins)", dist1_desc: "Conexión a las calas del sur, norte y Maó", dist1_time: "1 min a pie",
+        dist2_title: "Aparcamientos Públicos", dist2_desc: "Bolsas de aparcamiento gratuito en las inmediaciones", dist2_time: "~ 3 min a pie",
+        dist3_title: "Catedral y Casco Antiguo", dist3_desc: "Ses Voltes, comercios locales y restaurantes", dist3_time: "400 m (4 min)",
+        modal_title: "Accede a tu reserva", modal_desc: "Consulta o gestiona tu estancia directamente en nuestro portal oficial.", modal_email: "EMAIL DE CONFIRMACIÓN", modal_voucher: "CÓDIGO LOCALIZADOR", modal_btn: "Ir al portal GuestPro →",
+        footer_nav: "Navegación", footer_direct: "Reserva Directa", footer_desc: "Mejor tarifa garantizada en nuestra web oficial.", footer_panel: "→ Panel Oficial GuestPro", stamp_start: "PUNTO DE PARTIDA", stamp_cove: "RUMBO A LA CALA", stamp_rest: "& AL DESCANSO"
+      },
+      en: {
+        nav_my_booking: "🔑 My Booking", nav_essence: "The Hotel", nav_gallery: "Gallery", nav_rooms: "Rooms", nav_ticket: "Book Direct", nav_reviews: "Reviews", nav_location: "Location", nav_book_cta: "Check Availability",
+        badge_booking: "Wonderful on Booking",
+        hero_title: "Sleep quietly steps from the Old Town. <em>Wake up ready for the coves.</em>",
+        hero_subtitle: "A 30-room hotel on a serene street in Ciutadella. Comfortable rooms, renovated bathrooms, and our team always ready to help you plan your island days.",
+        hero_cta_primary: "🎟️ Book at the best price", hero_cta_secondary: "Read guest reviews",
+        fact_location: "Central location (400m from the Cathedral)", fact_staff: "Personalized & welcoming service", fact_parking: "Walking distance to the main bus station",
+        postmark_close: "PERSONAL TOUCH", cap_pool: "FIG 01. POOL & SOLARIUM", cap_room: "EXTERIOR ROOM",
+        essence_eyebrow: "Genuine hospitality, no fake fluff", essence_title: "The practical details that make a trip to Menorca effortless", essence_desc: "Our guests return because they value a comfortable, clean, and quiet basecamp where they can rest deeply and wake up ready for the island.",
+        perk1_tag: "CAFÉ & BREAKFAST", perk1_title: "The first coffee of the day (& takeaway options)", perk1_body: "Fresh coffee, toast, and classic ensaimadas. Heading out early? We can prepare large picnic sandwiches to take to the beach.",
+        perk2_tag: "PRACTICAL SERVICES", perk2_title: "Ready for the coves", perk2_body: "We know what you need for a day in the sun: frozen water bottles are available at the café, and we lend beach umbrellas upon request (subject to availability).",
+        perk3_tag: "HUMAN RECEPTION · 9.6/10", perk3_title: "The daily wind & cove briefing", perk3_body: "In Menorca, the wind decides. Our team will show you on the map which coast to visit to find calm waters and suggest great local spots for dinner.",
+        perk4_tag: "IN THE CENTER OF CIUTADELLA", perk4_title: "Steps from the Old Town", perk4_body: "A 5-minute walk to the Cathedral. While parking right at the door is limited, there are large public parking areas just a few minutes walk away.",
+        gallery_eyebrow: "Cleanliness 9.5 · Comfort 9.5", gallery_title: "Exterior, warm, and renovated rooms", gallery_desc: "Bright and functional spaces designed for resting. Natural wood furniture, air conditioning, and newly renovated bathrooms with walk-in showers.", rooms_cta: "Check room availability →",
+        ticket_eyebrow: "No middleman commissions", ticket_title: "Secure your stay directly with us", ticket_desc: "By booking through our official website you get access to real availability, our best price guarantee, and more flexible cancellation conditions.",
+        tick_direct: "DIRECT RATE", ticket_origin: "You Choose", tick_class: "TICKET TYPE", tick_open: "OPEN PASS WEB", tick_dates: "DATES", tick_portal: "CHOOSE IN PORTAL", tick_guests: "GUESTS", tick_portal2: "CHOOSE IN PORTAL",
+        ticket_perk1: "✓ Best Price Guarantee", ticket_perk2: "✓ 100% secure official payment", ticket_perk3: "✓ Instant confirmation",
+        stub_title: "Booking Pass", stub_subtitle: "Access the official GuestPro portal for Hotel Géminis.", stub_btn: "✂️ Tear & pick dates",
+        reviews_eyebrow: "1,045 reviews on Booking · 417 on Google", reviews_title: "We value the trust of every guest", reviews_desc: "Our daily goal is to offer you a spotlessly clean space, a good rest, and honest suggestions to enjoy the island.",
+        score_fantastic: "Wonderful", score_verified: "Based on 1,045 verified stays on Booking and 4.6/5 on Google Maps.",
+        cat_location: "Location", cat_staff: "Staff", cat_clean: "Cleanliness", cat_comfort: "Comfort", cat_value: "Value for money", cat_facilities: "Facilities",
+        filter_all: "All reviews", filter_staff: "Reception Service", filter_clean: "Cleanliness & Rest",
+        rev_adr_date: "October · 4 nights", rev_adr_txt: "“It was wonderful. <span class='review-highlight'>The bathroom was very modern and extra clean.</span> I have no complaints, the hotel room was very comfortable.”",
+        rev_bel_date: "September", rev_bel_txt: "“Practically attached to the old town of Ciutadella. <span class='review-highlight'>Very clean, very comfortable, and has breakfast and sandwich service.</span> The staff is also very nice and gave us many recommendations.”",
+        rev_jud_txt: "“Deserves more stars than it has! Super well located, 100% clean, <span class='review-highlight'>the reception and café managers are wonderfully kind</span> and helpful. We will repeat!”",
+        rev_ale_date: "September", rev_ale_txt: "“They were lovely, <span class='review-highlight'>the whole family running the hotel is wonderful.</span> They helped us with everything, beach and restaurant recommendations... super hospitable.”",
+        loc_eyebrow: "C/ Josepa Rossinyol, 4 · 07760 Ciutadella", loc_title: "Your starting point in the city", loc_desc: "Being located just steps from the old town, parking at the door is limited. However, we are surrounded by public car parks a few minutes walk away and right next to the main bus station.",
+        dist1_title: "Bus Station (Via Plaza dels Pins)", dist1_desc: "Connection to the southern and northern coves, and Maó", dist1_time: "1 min walk",
+        dist2_title: "Public Parking Areas", dist2_desc: "Free parking zones nearby", dist2_time: "~ 3 min walk",
+        dist3_title: "Cathedral & Old Town", dist3_desc: "Ses Voltes, local shops and restaurants", dist3_time: "400 m (4 min)",
+        modal_title: "Access your booking", modal_desc: "View or manage your stay directly on our official portal.", modal_email: "CONFIRMATION EMAIL", modal_voucher: "BOOKING REFERENCE", modal_btn: "Go to GuestPro portal →",
+        footer_nav: "Navigation", footer_direct: "Direct Booking", footer_desc: "Best rate guaranteed on our official website.", footer_panel: "→ Official GuestPro Panel", stamp_start: "STARTING POINT", stamp_cove: "HEADING TO THE COVE", stamp_rest: "& TO REST"
+      }
+      // Se pueden añadir FR, IT, CA aquí fácilmente clonando el bloque EN/ES.
+    };
+
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+      });
+      // Fallback a Español si el idioma no está definido en el JS
+      const dict = i18n[lang] || i18n.es; 
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.innerHTML = dict[key];
+        }
+      });
+    }
   </script>
 </body>
 </html>
