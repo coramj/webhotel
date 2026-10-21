@@ -52,37 +52,23 @@
     }
 
     /* ==========================================================================
-       FONDO DINÁMICO & MOSAICOS (BASE64 SAFE)
+       FONDO DINÁMICO (LIMPIO Y FLUIDO)
        ========================================================================== */
     .dynamic-bg {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-      pointer-events: none; z-index: 0; overflow: hidden;
+      /* Ampliamos ligeramente el tamaño para que el desplazamiento sea infinito sin cortes */
+      position: fixed; top: -40px; left: -40px; right: -40px; bottom: -40px;
+      pointer-events: none; z-index: 0;
       background-image: 
-        radial-gradient(rgba(52, 78, 59, 0.04) 1px, transparent 0),
-        radial-gradient(rgba(184, 139, 88, 0.04) 1px, transparent 0);
-      background-size: 32px 32px; background-position: 0 0, 16px 16px;
+        radial-gradient(rgba(52, 78, 59, 0.05) 1.5px, transparent 0),
+        radial-gradient(rgba(184, 139, 88, 0.05) 1.5px, transparent 0);
+      background-size: 40px 40px; 
+      background-position: 0 0, 20px 20px;
+      animation: moveBg 60s linear infinite;
     }
 
-    /* Patrón de cuadrados verdes en Base64 para evitar errores de renderizado */
-    .mosaic-bg-subtle { position: relative; }
-    .mosaic-bg-subtle::after {
-      content: ''; position: absolute; inset: 0; opacity: 0.04; pointer-events: none; z-index: 1;
-      background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0NCcgaGVpZ2h0PSc0NCcgdmlld0JveD0nMCAwIDQ0IDQ0Jz4KICA8ZyBmaWxsPScjNkE4NDY4JyBmaWxsLW9wYWNpdHk9JzEnPgogICAgPHJlY3QgeD0nMCcgeT0nMCcgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICA8cmVjdCB4PScyMicgeT0nMCcgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICA8cmVjdCB4PScxMScgeT0nMTEnIHdpZHRoPScxMScgaGVpZ2h0PScxMScvPgogICAgPHJlY3QgeD0nMzMnIHk9JzExJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgIDxyZWN0IHg9JzAnIHk9JzIyJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgIDxyZWN0IHg9JzIyJyB5PScyMicgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICA8cmVjdCB4PScxMScgeT0nMzMnIHdpZHRoPScxMScgaGVpZ2h0PScxMScvPgogICAgPHJlY3QgeD0nMzMnIHk9JzMzJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICA8L2c+Cjwvc3ZnPg==");
-    }
-
-    .floating-tile {
-      position: absolute; width: 60px; height: 60px; opacity: 0.04;
-      background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0NCcgaGVpZ2h0PSc0NCcgdmlld0JveD0nMCAwIDQ0IDQ0Jz4KICA8ZyBmaWxsPScjNkE4NDY4JyBmaWxsLW9wYWNpdHk9JzEnPgogICAgPHJlY3QgeD0nMCcgeT0nMCcgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICA8cmVjdCB4PScyMicgeT0nMCcgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICA8cmVjdCB4PScxMScgeT0nMTEnIHdpZHRoPScxMScgaGVpZ2h0PScxMScvPgogICAgPHJlY3QgeD0nMzMnIHk9JzExJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgIDxyZWN0IHg9JzAnIHk9JzIyJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgIDxyZWN0IHg9JzIyJyB5PScyMicgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICA8cmVjdCB4PScxMScgeT0nMzMnIHdpZHRoPScxMScgaGVpZ2h0PScxMScvPgogICAgPHJlY3QgeD0nMzMnIHk9JzMzJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICA8L2c+Cjwvc3ZnPg==");
-      animation: floatUp 35s linear infinite;
-    }
-
-    .floating-tile:nth-child(1) { left: 10%; bottom: -10%; animation-duration: 30s; transform: rotate(15deg); }
-    .floating-tile:nth-child(2) { left: 85%; bottom: -10%; animation-duration: 40s; animation-delay: 5s; transform: rotate(-20deg) scale(0.8); }
-    .floating-tile:nth-child(3) { left: 50%; bottom: -10%; animation-duration: 45s; animation-delay: 10s; transform: rotate(45deg) scale(1.2); }
-
-    @keyframes floatUp {
-      0% { transform: translateY(100px) rotate(0deg); }
-      100% { transform: translateY(-120vh) rotate(180deg); }
+    @keyframes moveBg {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(40px, 40px); }
     }
 
     /* Animaciones sutiles y elegantes (Hover & Reveal) */
@@ -113,11 +99,12 @@
     .stamp-2 { top: 40%; left: 2%; --rot: -14deg; --stamp-color: var(--green-curtain); }
     .stamp-3 { top: 75%; right: 3%; --rot: -8deg; --stamp-color: var(--wood-dark); }
 
-    /* Divisor Cenefa (Base64 Safe) */
-    .hydraulic-ribbon {
-      width: 100%; height: 44px; background-color: var(--bg-sand);
-      border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);
-      background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxNzYnIGhlaWdodD0nNDQnIHZpZXdCb3g9JzAgMCAxNzYgNDQnPgogIDxnIGZpbGw9J25vbmUnIGZpbGwtcnVsZT0nZXZlbm9kZCc+CiAgICA8cmVjdCB3aWR0aD0nNDQnIGhlaWdodD0nNDQnIGZpbGw9JyNGNkYzRUEnLz4KICAgIDxnIGZpbGw9JyM2QTg0NjgnIGZpbGwtb3BhY2l0eT0nMC40NSc+CiAgICAgIDxyZWN0IHg9JzAnIHk9JzAnIHdpZHRoPScxMScgaGVpZ2h0PScxMScvPgogICAgICA8cmVjdCB4PScyMicgeT0nMCcgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICAgIDxyZWN0IHg9JzExJyB5PScxMScgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICAgIDxyZWN0IHg9JzMzJyB5PScxMScgd2lkdGg9JzExJyBoZWlnaHQ9JzExJy8+CiAgICAgIDxyZWN0IHg9JzAnIHk9JzIyJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgICAgPHJlY3QgeD0nMjInIHk9JzIyJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgICAgPHJlY3QgeD0nMTEnIHk9JzMzJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgICAgPHJlY3QgeD0nMzMnIHk9JzMzJyB3aWR0aD0nMTEnIGhlaWdodD0nMTEnLz4KICAgIDwvZz4KICAgIDxyZWN0IHg9JzQ0JyB3aWR0aD0nNDQnIGhlaWdodD0nNDQnIGZpbGw9JyNFQ0U2RDYnLz4KICAgIDxwb2x5Z29uIHBvaW50cz0nNjYsNCA4NCwyMiA2Niw0MCA0OCwyMicgZmlsbD0nIzM0NEUzQicgZmlsbC1vcGFjaXR5PScwLjc1Jy8+CiAgICA8Y2lyY2xlIGN4PSc2NicgY3k9JzIyJyByPSc2JyBmaWxsPScjQjg4QjU4JyBmaWxsLW9wYWNpdHk9JzAuOCcvPgogICAgPGNpcmNsZSBjeD0nNjYnIGN5PScyMicgcj0nMi41JyBmaWxsPScjRjZGM0VBJy8+CiAgICA8cmVjdCB4PSc4OCcgd2lkdGg9JzQ0JyBoZWlnaHQ9JzQ0JyBmaWxsPScjRjZGM0VBJy8+CiAgICA8cGF0aCBkPSdNMTEwIDYgQzExNCAxNCAxMTggMTggMTI2IDIyIEMxMTggMjYgMTE0IDMwIDExMCAzOCBDMTA2IDMwIDEwMiAyNiA5NCAyMiBDMTAyIDE4IDEwNiAxNCAxMTAgNiBaJyBzdHJva2U9JyM2QTg0NjgnIHN0cm9rZS13aWR0aD0nMicgZmlsbD0nIzZBODY4JyBmaWxsLW9wYWNpdHk9JzAuMjUnLz4KICAgIDxyZWN0IHg9JzEzMicgd2lkdGg9JzQ0JyBoZWlnaHQ9JzQ0JyBmaWxsPScjMzQ0RTNCJyBmaWxsLW9wYWNpdHk9JzAuMTInLz4KICAgIDxwYXRoIGQ9J00xNTAgMTAgTDE1OCAxMCBMMTU2IDE4IEwxNjQgMTYgTDE2NCAyNCBMMTU2IDIyIEwxNTggMzAgTDE1MCAzMCBMMTUyIDIyIEwxNDQgMjQgTDE0NCAxNiBMMTUyIDE4IFonIGZpbGw9JyM4QzIzMkEnIGZpbGwtb3BhY2l0eT0nMC40NScvPgogIDwvZz4KPC9zdmc+");
+    /* Divisor Elegante (Reemplazo del cuadriculado que fallaba) */
+    .elegant-divider {
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--wood-oak), transparent);
+      opacity: 0.25;
+      margin: 20px 0;
       position: relative; z-index: 2;
     }
 
@@ -311,13 +298,8 @@
 </head>
 <body>
 
-  <!-- FONDO DINÁMICO JUGUETÓN -->
-  <div class="dynamic-bg">
-    <div class="floating-tile"></div>
-    <div class="floating-tile"></div>
-    <div class="floating-tile"></div>
-    <div class="floating-tile"></div>
-  </div>
+  <!-- FONDO DINÁMICO FLUIDO Y LIMPIO -->
+  <div class="dynamic-bg"></div>
 
   <!-- SELLOS POSTALES DE FONDO (SCROLL) -->
   <div class="stamp-layer" aria-hidden="true">
@@ -442,7 +424,7 @@
         <strong style="font-size: 0.9rem; margin: 2px 0;">100% REAL</strong>
         <span data-i18n="postmark_close">TRATO CERCANO</span>
       </div>
-      <div class="postcard-main mosaic-bg-subtle hover-lift">
+      <div class="postcard-main hover-lift">
         <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383553.jpg?k=2c0d950402c170b0e9f2b7b86fd96978dbdb9060557fac224faf57dd23cb156c&o=&hp=1" alt="Piscina y exterior del Hotel Géminis en Ciutadella">
         <div class="postcard-caption">
           <span data-i18n="cap_pool">FIG 01. PISCINA Y SOLÁRIUM</span>
@@ -456,7 +438,7 @@
     </div>
   </section>
 
-  <div class="hydraulic-ribbon" title="Patrón hidráulico original de nuestras habitaciones"></div>
+  <div class="elegant-divider"></div>
 
   <!-- LA CASA Y SERVICIOS -->
   <section id="esencia" class="section reveal">
@@ -469,7 +451,7 @@
     </div>
 
     <div class="perks-grid">
-      <article class="perk-card mosaic-bg-subtle hover-lift">
+      <article class="perk-card hover-lift">
         <div>
           <span class="perk-tag" data-i18n="perk1_tag">CAFETERÍA Y DESAYUNOS</span>
           <h3 data-i18n="perk1_title">El primer café del día (y opciones para llevar)</h3>
@@ -479,7 +461,7 @@
         </div>
       </article>
 
-      <article class="perk-card mosaic-bg-subtle hover-lift">
+      <article class="perk-card hover-lift">
         <div>
           <span class="perk-tag" data-i18n="perk2_tag">SERVICIOS PRÁCTICOS</span>
           <h3 data-i18n="perk2_title">Preparados para la cala</h3>
@@ -489,7 +471,7 @@
         </div>
       </article>
 
-      <article class="perk-card mosaic-bg-subtle hover-lift">
+      <article class="perk-card hover-lift">
         <div>
           <span class="perk-tag" data-i18n="perk3_tag">ATENCIÓN CERCANA · 9,6/10</span>
           <h3 data-i18n="perk3_title">El parte del viento cada mañana</h3>
@@ -499,7 +481,7 @@
         </div>
       </article>
 
-      <article class="perk-card mosaic-bg-subtle hover-lift">
+      <article class="perk-card hover-lift">
         <div>
           <span class="perk-tag" data-i18n="perk4_tag">EN EL CENTRO DE CIUTADELLA</span>
           <h3 data-i18n="perk4_title">A un paso del casco antiguo</h3>
@@ -546,7 +528,7 @@
     </div>
   </section>
 
-  <div class="hydraulic-ribbon"></div>
+  <div class="elegant-divider"></div>
 
   <!-- BILLETE (OPEN TICKET - RESERVA) -->
   <section id="billete" class="ticket-section reveal">
@@ -560,7 +542,7 @@
       </div>
 
       <div class="boarding-pass">
-        <div class="ticket-main mosaic-bg-subtle">
+        <div class="ticket-main">
           <div>
             <div class="ticket-top-bar">
               <div class="ticket-airline">
@@ -687,7 +669,7 @@
     </div>
 
     <div class="reviews-masonry" id="reviews-grid">
-      <article class="review-card mosaic-bg-subtle hover-lift" data-category="comfort">
+      <article class="review-card hover-lift" data-category="comfort">
         <div style="position:relative; z-index:2;">
           <div class="review-card-header">
             <div class="reviewer-info">
@@ -702,7 +684,7 @@
         </div>
       </article>
 
-      <article class="review-card mosaic-bg-subtle hover-lift" data-category="comfort">
+      <article class="review-card hover-lift" data-category="comfort">
         <div style="position:relative; z-index:2;">
           <div class="review-card-header">
             <div class="reviewer-info">
@@ -717,7 +699,7 @@
         </div>
       </article>
 
-      <article class="review-card mosaic-bg-subtle hover-lift" data-category="staff">
+      <article class="review-card hover-lift" data-category="staff">
         <div style="position:relative; z-index:2;">
           <div class="review-card-header">
             <div class="reviewer-info">
@@ -732,7 +714,7 @@
         </div>
       </article>
 
-      <article class="review-card mosaic-bg-subtle hover-lift" data-category="staff">
+      <article class="review-card hover-lift" data-category="staff">
         <div style="position:relative; z-index:2;">
           <div class="review-card-header">
             <div class="reviewer-info">
@@ -794,7 +776,7 @@
 
   <!-- MODAL "MI RESERVA" -->
   <div class="modal-backdrop" id="booking-modal" onclick="if(event.target === this) toggleModal(false)">
-    <div class="modal-box mosaic-bg-subtle">
+    <div class="modal-box">
       <button class="modal-close" onclick="toggleModal(false)" aria-label="Cerrar">×</button>
       <span class="eyebrow">GUESTPRO · HOTEL GÉMINIS</span>
       <h3 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 8px;" data-i18n="modal_title">Accede a tu reserva</h3>
@@ -879,11 +861,9 @@
     document.addEventListener("DOMContentLoaded", function() {
       const mapEl = document.getElementById('map');
       if(mapEl) {
-        // Inicializamos con un pequeño retardo para evitar fallos de renderizado
         setTimeout(() => {
             var map = L.map('map').setView([40.0008, 3.8378], 16);
             
-            // Servidor libre de OpenStreetMap (No requiere API key)
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
               maxZoom: 19,
               attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -948,7 +928,7 @@
     }, { passive: true });
     setTimeout(() => stamps[0]?.classList.add('stamped'), 400);
 
-    // 7. SISTEMA DE TRADUCCIÓN INSTANTÁNEA POR JS (A PRUEBA DE BALAS)
+    // 7. SISTEMA DE TRADUCCIÓN INSTANTÁNEA POR JS (INCLUYE TODOS LOS IDIOMAS)
     const i18n = {
       es: {
         nav_my_booking: "🔑 Mi Reserva", nav_essence: "El Hotel", nav_gallery: "Galería", nav_rooms: "Habitaciones", nav_ticket: "Reservar", nav_reviews: "Opiniones", nav_location: "Ubicación", nav_book_cta: "Consultar Disponibilidad",
@@ -1027,7 +1007,7 @@
         essence_eyebrow: "Hospitalitat de veritat, sense artificis", essence_title: "Les coses que et faciliten les vacances a Menorca", essence_desc: "Els nostres hostes repeteixen perquè valoren tenir una base còmoda, neta i tranquil·la. Un lloc on descansar i sortir al matí amb tot llest per gaudir de l'illa.",
         perk1_tag: "CAFETERIA I ESMORZARS", perk1_title: "El primer cafè del dia (i opcions per emportar)", perk1_body: "Cafè acabat de fer, torrades i la clàssica ensaïmada per agafar forces. Si surts d'hora d'excursió, a la cafeteria podem preparar-te entrepans per portar a la platja.",
         perk2_tag: "SERVEIS PRÀCTICS", perk2_title: "Preparats per a la cala", perk2_body: "Sabem què necessites per a un dia de sol: disposem d'ampolles d'aigua congelada i oferim servei de préstec de para-sols sota petició (subjecte a disponibilitat).",
-        perk3_tag: "ATENCIÓ PROPERA · 9,6/10", perk3_title: "El comunicat del vent cada matí", perk3_body: "A Menorca el vent mana. El nostre equip de recepció t'indicarà mapa en mà quina costa visitar cada dia per trobar el mar en calma i et suggerirà llocs locals per sopar.",
+        perk3_tag: "ATENCIÓ PROPERA · 9,6/10", perk3_title: "El comunicat del vent cada matí", perk3_body: "A Menorca el vent mana. El nostre equip de recepció t'indicarà mapa en mà quina costa visitar cada dia per trobar el mar en calma i et suggeriran llocs locals per sopar.",
         perk4_tag: "AL CENTRE DE CIUTADELLA", perk4_title: "A un pas del nucli antic", perk4_body: "Estem a 5 minuts a peu de la Catedral. Tot i que l'aparcament a la porta és limitat per estar cèntrics, hi ha pàrquings públics a pocs minuts caminant.",
         gallery_eyebrow: "Neteja 9,5 · Confort 9,5", gallery_title: "Habitacions exteriors, càlides i reformades", gallery_desc: "Espais lluminosos i funcionals pensats per al descans. Mobiliari de fusta natural, climatització i banys renovats amb dutxes àmplies.", rooms_cta: "Comprovar disponibilitat d'habitacions →",
         ticket_eyebrow: "Sense comissions d'intermediaris", ticket_title: "Assegura la teva estada directament amb nosaltres", ticket_desc: "Reservant a través de la nostra web oficial accedeixes a la nostra disponibilitat real, al millor preu garantit i a condicions de cancel·lació més flexibles.",
@@ -1134,3 +1114,4 @@
   </script>
 </body>
 </html>
+```<FollowUp label="¿Quieres que haga algún ajuste más al diseño?" query="¿Quieres que haga algún ajuste más al diseño de la página?"/>
