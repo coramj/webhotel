@@ -59,10 +59,11 @@
       position: fixed; top: -40px; left: -40px; right: -40px; bottom: -40px;
       pointer-events: none; z-index: 0;
       background-image: 
-        radial-gradient(rgba(52, 78, 59, 0.05) 1.5px, transparent 0),
-        radial-gradient(rgba(184, 139, 88, 0.05) 1.5px, transparent 0);
-      background-size: 40px 40px; 
-      background-position: 0 0, 20px 20px;
+        radial-gradient(circle at 50% 50%, rgba(52, 78, 59, 0.055) 1.5px, transparent 2px),
+        radial-gradient(circle at 0 0, transparent 13px, rgba(184, 139, 88, 0.045) 14px 15px, transparent 16px),
+        radial-gradient(circle at 100% 100%, transparent 13px, rgba(52, 78, 59, 0.04) 14px 15px, transparent 16px);
+      background-size: 48px 48px;
+      background-position: 0 0, 0 0, 24px 24px;
       animation: moveBg 60s linear infinite;
     }
 
@@ -101,9 +102,14 @@
 
     /* Divisor Elegante (Reemplazo del cuadriculado que fallaba) */
     .elegant-divider {
-      width: 100%; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--wood-oak), transparent);
-      opacity: 0.25;
+      width: 100%; height: 20px;
+      background-color: var(--bg-sand);
+      background-image:
+        linear-gradient(45deg, transparent 42%, rgba(52, 78, 59, 0.22) 43% 57%, transparent 58%),
+        linear-gradient(-45deg, transparent 42%, rgba(184, 139, 88, 0.2) 43% 57%, transparent 58%);
+      background-size: 24px 20px;
+      border-top: 1px solid rgba(52, 78, 59, 0.12);
+      border-bottom: 1px solid rgba(52, 78, 59, 0.12);
       margin: 20px 0;
       position: relative; z-index: 2;
     }
@@ -120,7 +126,7 @@
     .lang-btn { text-decoration: none; background: transparent; border: none; color: rgba(255, 255, 255, 0.75); font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; transition: all 0.2s; cursor: pointer;}
     .lang-btn.active, .lang-btn:hover { background: var(--bg-chalk); color: var(--green-curtain); }
     
-    .my-booking-trigger { background: transparent; border: 1px solid rgba(255,255,255,0.35); color: #fff; font-size: 0.76rem; padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: background 0.2s; font-family: var(--font-sans);}
+    .my-booking-trigger { display: inline-flex; align-items: center; background: transparent; border: 1px solid rgba(255,255,255,0.35); color: #fff; font-size: 0.76rem; padding: 4px 10px; border-radius: 4px; cursor: pointer; transition: background 0.2s; font-family: var(--font-sans); text-decoration: none;}
     .my-booking-trigger:hover { background: rgba(255,255,255,0.15); }
 
     /* Navbar */
@@ -174,11 +180,15 @@
 
     /* Secciones */
     .section { max-width: 1240px; margin: 0 auto; padding: 84px 24px; position: relative; z-index: 2; }
-    .section-header { max-width: 760px; margin-bottom: 52px; }
+    .section-header { max-width: 760px; margin: 0 auto 52px; text-align: center; }
     .eyebrow { font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--sant-joan-red); display: inline-flex; align-items: center; gap: 8px; margin-bottom: 12px; }
     .eyebrow::before { content: '✦'; color: var(--wood-oak); }
     .section-title { font-family: var(--font-display); font-size: clamp(2.1rem, 3.6vw, 3.1rem); font-weight: 600; line-height: 1.12; color: var(--ink-dark); margin-bottom: 16px; }
-    .section-desc { font-family: var(--font-serif-body); font-size: 1.15rem; color: var(--ink-muted); }
+    .section-title::after { content: ''; display: block; width: 34px; height: 2px; margin: 12px auto 0; background: var(--wood-oak); transform: scaleX(0.35); transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.active .section-title::after { transform: scaleX(1); }
+    .section-desc { font-family: var(--font-serif-body); font-size: 1.15rem; color: var(--ink-muted); transition: color 0.3s ease; }
+    .gallery-room-types { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 20px 0 4px; list-style: none; }
+    .gallery-room-type { padding: 7px 12px; border: 1px solid var(--border-subtle); border-radius: 999px; background: rgba(252, 251, 247, 0.82); color: var(--green-curtain); font-size: 0.76rem; font-weight: 600; }
 
     /* Perks Grid */
     .perks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 24px; }
@@ -187,19 +197,52 @@
     .perk-card h3 { font-family: var(--font-display); font-size: 1.65rem; font-weight: 700; margin-bottom: 10px; color: var(--ink-dark); position: relative; z-index: 1;}
     .perk-card p { font-size: 0.94rem; color: var(--ink-muted); margin-bottom: 0; position: relative; z-index: 1;}
 
-    /* Galería Visual Masonry */
-    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 200px; gap: 16px; margin-top: 40px; }
-    .gallery-item { position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-subtle); }
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-    .gallery-item:hover img { transform: scale(1.05); }
-    .gallery-item.large { grid-column: span 2; grid-row: span 2; }
-    .gallery-item.tall { grid-row: span 2; }
-    .gallery-item.wide { grid-column: span 2; }
+    /* Mosaico continuo de habitaciones y espacios comunes */
+    .gallery-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 28px 0 14px; }
+    .gallery-hint { color: var(--ink-muted); font-family: var(--font-serif-body); font-size: 0.98rem; }
+    .gallery-controls { display: flex; gap: 8px; }
+    .gallery-arrow { width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--border-subtle); border-radius: 50%; background: var(--bg-card); color: var(--green-curtain); font-size: 1.5rem; line-height: 1; cursor: pointer; box-shadow: 0 3px 0 rgba(52, 78, 59, 0.1); transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease; }
+    .gallery-arrow:hover { background: var(--green-curtain); color: var(--bg-chalk); transform: translateY(-2px); }
+    .gallery-arrow:focus-visible { outline: 3px solid var(--wood-oak); outline-offset: 3px; }
+    .gallery-viewport { --gallery-width: min(1120px, calc(100vw - 64px)); overflow: hidden; padding: 4px 2px 12px; touch-action: pan-y; }
+    .gallery-track { --gallery-gap: 16px; display: flex; gap: var(--gallery-gap); width: max-content; animation: gallery-loop 48s linear infinite; }
+    @keyframes gallery-loop {
+      to { transform: translateX(calc(-50% - var(--gallery-gap) / 2)); }
+    }
+    .gallery-toolbar:hover + .gallery-viewport .gallery-track,
+    .gallery-toolbar:focus-within + .gallery-viewport .gallery-track,
+    .gallery-viewport:hover .gallery-track,
+    .gallery-viewport:focus-within .gallery-track { animation-play-state: paused; }
+    .gallery-group { display: grid; flex: 0 0 var(--gallery-width); grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 12px; height: 420px; }
+    .gallery-card { position: relative; min-width: 0; min-height: 0; margin: 0; overflow: hidden; border: 1px solid rgba(52, 78, 59, 0.2); border-radius: 12px 4px 12px 4px; background: var(--bg-card); box-shadow: 0 8px 22px rgba(28, 35, 30, 0.1); }
+    .gallery-card--feature { grid-row: span 2; grid-column: span 4; }
+    .gallery-card--four { grid-column: span 4; }
+    .gallery-card--three { grid-column: span 4; }
+    .gallery-card img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; border-radius: inherit; object-fit: cover; object-position: center; transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1); }
+    .gallery-card:hover img { transform: scale(1.02); }
+    .gallery-caption { position: absolute; right: 0; bottom: 0; left: 0; padding: 42px 14px 12px; background: linear-gradient(transparent, rgba(28, 35, 30, 0.78)); color: #fff; font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; line-height: 1.1; text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); }
     
     @media (max-width: 768px) {
-      .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; }
-      .gallery-item.large { grid-column: span 2; grid-row: span 2; }
-      .gallery-item.tall { grid-row: span 1; }
+      .gallery-room-types { gap: 6px; margin-top: 16px; }
+      .gallery-room-type { padding: 6px 10px; font-size: 0.7rem; }
+      .gallery-toolbar { align-items: flex-end; margin-top: 24px; }
+      .gallery-hint { max-width: 220px; font-size: 0.9rem; }
+      .gallery-viewport { --gallery-width: calc(100vw - 64px); }
+      .gallery-group { grid-template-columns: repeat(8, minmax(0, 1fr)); grid-template-rows: repeat(5, minmax(0, 1fr)); gap: 8px; height: 540px; }
+      .gallery-card--feature { grid-column: span 4; grid-row: span 2; }
+      .gallery-card--four,
+      .gallery-card--three { grid-column: span 4; }
+      .gallery-caption { padding: 30px 8px 8px; font-size: clamp(0.78rem, 3.5vw, 1rem); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gallery-track { animation: none; }
+      .gallery-viewport { overflow-x: auto; scroll-behavior: auto; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
     }
 
     /* Open Ticket (Reserva Abierta) */
@@ -337,9 +380,9 @@
           <button class="lang-btn" onclick="setLang('fr')">FR</button>
           <button class="lang-btn" onclick="setLang('it')">IT</button>
         </div>
-        <button class="my-booking-trigger" onclick="toggleModal(true)" data-i18n="nav_my_booking">
+        <a class="my-booking-trigger" href="#billete" data-i18n="nav_my_booking">
           🔑 Mi Reserva
-        </button>
+        </a>
       </div>
     </div>
   </div>
@@ -362,7 +405,7 @@
           <li><a href="#resenas" data-i18n="nav_reviews">Opiniones</a></li>
           <li><a href="#ubicacion" data-i18n="nav_location">Ubicación</a></li>
           <li>
-            <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener" class="btn-book-nav" data-i18n="nav_book_cta">
+            <a href="#billete" class="btn-book-nav" data-i18n="nav_book_cta">
               Consultar Disponibilidad
             </a>
           </li>
@@ -421,8 +464,8 @@
     <div class="hero-visual">
       <div class="postmark-badge">
         <span>MENORCA</span>
-        <strong style="font-size: 0.9rem; margin: 2px 0;">100% REAL</strong>
-        <span data-i18n="postmark_close">TRATO CERCANO</span>
+        <strong style="font-size: 0.9rem; margin: 2px 0;">GÉMINIS</strong>
+        <span>CIUTADELLA</span>
       </div>
       <div class="postcard-main hover-lift">
         <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383553.jpg?k=2c0d950402c170b0e9f2b7b86fd96978dbdb9060557fac224faf57dd23cb156c&o=&hp=1" alt="Piscina y exterior del Hotel Géminis en Ciutadella">
@@ -493,35 +536,95 @@
     </div>
   </section>
 
-  <!-- GALERÍA (NUEVO DISEÑO MASONRY) -->
+  <!-- GALERÍA -->
   <section id="galeria" class="section reveal" style="padding-top: 20px;">
-    <div class="section-header" style="max-width: 100%; text-align: center;">
-      <span class="eyebrow" style="justify-content: center;" data-i18n="gallery_eyebrow">Limpieza 9,5 · Confort 9,5</span>
+    <div class="section-header">
+      <span class="eyebrow" data-i18n="gallery_eyebrow">Espacios del Hotel Géminis</span>
       <h2 class="section-title" data-i18n="gallery_title">Habitaciones exteriores, cálidas y reformadas</h2>
-      <p class="section-desc" style="max-width: 600px; margin: 0 auto;" data-i18n="gallery_desc">
-        Espacios luminosos y funcionales pensados para el descanso. Mobiliario en madera natural, climatización y cuartos de baño renovados con duchas amplias.
+      <p class="section-desc" data-i18n="gallery_desc">
+        Habitaciones para cada forma de viajar y espacios comunes para disfrutar cada momento. Desliza y descubre el hotel.
       </p>
     </div>
 
-    <div class="gallery-grid">
-      <div class="gallery-item large hover-lift">
-        <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383481.jpg?k=72462aaa2a4947701b17a26accaf3c3e1a50e5ce6c2dcc360813d02c59976c7f&o=&hp=1" alt="Habitación Doble Exterior">
+    <div class="gallery-toolbar">
+      <span class="gallery-hint" data-i18n="gallery_hint">Desliza o usa las flechas para explorar</span>
+      <div class="gallery-controls">
+        <button class="gallery-arrow" type="button" data-gallery-previous data-i18n-aria="gallery_previous" aria-label="Foto anterior">‹</button>
+        <button class="gallery-arrow" type="button" data-gallery-next data-i18n-aria="gallery_next" aria-label="Foto siguiente">›</button>
       </div>
-      <div class="gallery-item tall hover-lift">
-        <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383519.jpg?k=511707f42286a2e7e3d69831c3dbb66a6a2dbda404619c4483632087a6fa924a&o=&hp=1" alt="Baño reformado con ducha">
-      </div>
-      <div class="gallery-item hover-lift">
-        <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383566.jpg?k=12de919c6ca7b1ba0db6d9eea36580af1b9bd483b33ebaad08571c9d9469bdab&o=&hp=1" alt="Piscina y solárium">
-      </div>
-      <div class="gallery-item wide hover-lift">
-        <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383597.jpg?k=fcbcdc9d4f0e69206efa755bc2238d574bb0247cf54d05fde81c800b32633fca&o=&hp=1" alt="Cafetería del Hotel Géminis">
-      </div>
-      <div class="gallery-item hover-lift">
-        <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383544.jpg?k=b48d2f84ff665d6a457951e80cac17bc78c56e0232aad4653812f4627c2251d1&o=&hp=1" alt="Detalle de habitación">
+    </div>
+
+    <div class="gallery-viewport" role="region" aria-label="Galería de habitaciones y espacios del hotel" data-i18n-aria="gallery_region" tabindex="0">
+      <div class="gallery-track">
+        <div class="gallery-group">
+        <!-- Mantén las fotos en este primer grupo; el carrusel replica el grupo al iniciar. -->
+        <figure class="gallery-card gallery-card--feature">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383519.jpg?k=511707f42286a2e7e3d69831c3dbb66a6a2dbda404619c4483632087a6fa924a&o=&hp=1" alt="Colcha estampada a los pies de una cama" loading="lazy" data-i18n-alt="gallery_alt_textile">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_textile">Un detalle muy nuestro</figcaption>
+        </figure>
+        <figure class="gallery-card gallery-card--four">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383481.jpg?k=72462aaa2a4947701b17a26accaf3c3e1a50e5ce6c2dcc360813d02c59976c7f&o=&hp=1" alt="Habitación con cama de matrimonio y cabecero de madera" loading="lazy" data-i18n-alt="gallery_alt_matrimonial">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_matrimonial">Cama de matrimonio</figcaption>
+        </figure>
+        <figure class="gallery-card gallery-card--three">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383478.jpg?k=c7574c32166f3e401533dd6d76174292beaa238508466b8b6ef13c3bfefd3fc2&o=&hp=1" alt="Habitación exterior con cama de matrimonio" loading="lazy" data-i18n-alt="gallery_alt_room">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_room">Un rincón para descansar</figcaption>
+        </figure>
+        <figure class="gallery-card gallery-card--three">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383553.jpg?k=2c0d950402c170b0e9f2b7b86fd96978dbdb9060557fac224faf57dd23cb156c&o=&hp=1" alt="Piscina exterior y terraza del hotel" loading="lazy" data-i18n-alt="gallery_alt_pool">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_pool">Piscina y terraza</figcaption>
+        </figure>
+        <figure class="gallery-card gallery-card--three">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383597.jpg?k=fcbcdc9d4f0e69206efa755bc2238d574bb0247cf54d05fde81c800b32633fca&o=&hp=1" alt="Desayuno servido en la cafetería del hotel" loading="lazy" data-i18n-alt="gallery_alt_cafe">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_cafe">Cafetería y comedor</figcaption>
+        </figure>
+        <figure class="gallery-card gallery-card--three">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383566.jpg?k=12de919c6ca7b1ba0db6d9eea36580af1b9bd483b33ebaad08571c9d9469bdab&o=&hp=1" alt="Entrada principal del Hotel Géminis" loading="lazy" data-i18n-alt="gallery_alt_entrance">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_entrance">Entrada y recepción</figcaption>
+        </figure>
+        <figure class="gallery-card gallery-card--four">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383544.jpg?k=b48d2f84ff665d6a457951e80cac17bc78c56e0232aad4653812f4627c2251d1&o=&hp=1" alt="Un rincón acogedor del Hotel Géminis" loading="lazy" data-i18n-alt="gallery_alt_details">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_details">Detalles de nuestras habitaciones</figcaption>
+        </figure>
+        <figure class="gallery-card gallery-card--four">
+          <img src="https://img.guestpro.com/images/pms/photo/200945-photo-large.jpg?1718639551" alt="Piscina del Hotel Géminis" loading="lazy" data-i18n-alt="gallery_alt_pool">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_pool">Piscina y terraza</figcaption>
+        </figure>
+        </div>
+        <div class="gallery-group" role="group" aria-label="Fotos del hotel" aria-hidden="true">
+        <figure class="gallery-card gallery-card--feature">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383519.jpg?k=511707f42286a2e7e3d69831c3dbb66a6a2dbda404619c4483632087a6fa924a&o=&hp=1" alt="" loading="lazy">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_textile">Un detalle muy nuestro</figcaption>
+        </figure>
+        <figure class="gallery-card gallery-card--four">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383481.jpg?k=72462aaa2a4947701b17a26accaf3c3e1a50e5ce6c2dcc360813d02c59976c7f&o=&hp=1" alt="" loading="lazy">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_matrimonial">Cama de matrimonio</figcaption>
+        </figure>
+        <figure class="gallery-card gallery-card--three">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383478.jpg?k=c7574c32166f3e401533dd6d76174292beaa238508466b8b6ef13c3bfefd3fc2&o=&hp=1" alt="" loading="lazy">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_room">Un rincón para descansar</figcaption>
+        </figure>
+        <figure class="gallery-card gallery-card--three">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383553.jpg?k=2c0d950402c170b0e9f2b7b86fd96978dbdb9060557fac224faf57dd23cb156c&o=&hp=1" alt="" loading="lazy">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_pool">Piscina y terraza</figcaption>
+        </figure>
+        <figure class="gallery-card gallery-card--three">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383597.jpg?k=fcbcdc9d4f0e69206efa755bc2238d574bb0247cf54d05fde81c800b32633fca&o=&hp=1" alt="" loading="lazy">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_cafe">Cafetería y comedor</figcaption>
+        </figure>
+        <figure class="gallery-card gallery-card--three">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383566.jpg?k=12de919c6ca7b1ba0db6d9eea36580af1b9bd483b33ebaad08571c9d9469bdab&o=&hp=1" alt="" loading="lazy">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_entrance">Entrada y recepción</figcaption>
+        </figure>
+        <figure class="gallery-card gallery-card--four">
+          <img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/301383544.jpg?k=b48d2f84ff665d6a457951e80cac17bc78c56e0232aad4653812f4627c2251d1&o=&hp=1" alt="" loading="lazy">
+          <figcaption class="gallery-caption" data-i18n="gallery_card_details">Detalles de nuestras habitaciones</figcaption>
+        </figure>
+        </div>
       </div>
     </div>
     
-    <div style="text-align: center; margin-top: 36px;">
+    <div style="text-align: center; margin-top: 24px;">
       <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener" class="btn-primary" data-i18n="rooms_cta">
         Comprobar disponibilidad de habitaciones →
       </a>
@@ -572,11 +675,11 @@
               </div>
               <div class="ticket-info-block">
                 <span data-i18n="tick_dates">FECHAS</span>
-                <strong data-i18n="tick_portal">ELEGIR EN PORTAL</strong>
+                <strong data-i18n="tick_portal">ELEGIR FECHAS</strong>
               </div>
               <div class="ticket-info-block">
                 <span data-i18n="tick_guests">HUÉSPEDES</span>
-                <strong data-i18n="tick_portal2">ELEGIR EN PORTAL</strong>
+                <strong data-i18n="tick_portal2">INDICAR HUÉSPEDES</strong>
               </div>
             </div>
           </div>
@@ -599,7 +702,7 @@
               Pase de Reserva
             </h3>
             <p style="font-size: 0.83rem; color: var(--ink-muted);" data-i18n="stub_subtitle">
-              Accede al portal oficial GuestPro del Hotel Géminis.
+              Consulta disponibilidad y elige las fechas de tu estancia.
             </p>
             <div class="barcode" aria-hidden="true"></div>
             <div style="font-family: var(--font-mono); font-size: 0.68rem; text-align: center; color: var(--ink-muted); margin-bottom: 14px;">
@@ -703,6 +806,34 @@
         <div style="position:relative; z-index:2;">
           <div class="review-card-header">
             <div class="reviewer-info">
+              <strong>Marta · España</strong>
+              <span>Habitación individual · 1 noche · agosto de 2026</span>
+              <span>Viaja sola · 9 de septiembre de 2026</span>
+            </div>
+            <span class="review-badge">9 / 10</span>
+          </div>
+          <p class="review-text"><strong>Super recomendado</strong><br>“La ubicación es excelente. A un par de calles del centro turístico de Ciutadella, donde hay muchas tiendas, restaurantes, heladerías y supermercado; y a tan solo 8 minutos a pie de los autocares que salen a las diferentes playas (Turqueta, Macarella), además del bus a Maó (1 h de trayecto). La piscina es pequeña, pero perfecta para refrescarte en el agua, en una tumbona o en la pequeña terraza tomando un refresco (1,50 €). La habitación es grande y cómoda. Y los dueños: ¡un encanto! Lo recomiendo y pienso repetir. Todo estaba perfecto.”</p>
+        </div>
+      </article>
+
+      <article class="review-card hover-lift" data-category="comfort">
+        <div style="position:relative; z-index:2;">
+          <div class="review-card-header">
+            <div class="reviewer-info">
+              <strong>Raul · España</strong>
+              <span>Habitación doble - 2 camas · 5 noches · agosto de 2026</span>
+              <span>En pareja · 8 de agosto de 2026</span>
+            </div>
+            <span class="review-badge">10 / 10</span>
+          </div>
+          <p class="review-text"><strong>¡Excelente!</strong><br>“Excelente. Nos gustó todo. Mucha amabilidad de parte de los propietarios y el personal. Estaba muy bien ubicado en el centro de la ciudad y la habitación bien equipada; se nota que se ha reformado hace poco. ¡Las camas muy cómodas! El aire acondicionado silencioso. Además, tiene piscina, aunque solo la disfrutamos una vez porque tuvimos un plan muy intenso para ver todo Menorca y no pasamos mucho tiempo en el hotel. La limpieza también estuvo al nivel. Muchas gracias por todo, repetiríamos.”</p>
+        </div>
+      </article>
+
+      <article class="review-card hover-lift" data-category="staff">
+        <div style="position:relative; z-index:2;">
+          <div class="review-card-header">
+            <div class="reviewer-info">
               <strong>Judith González</strong>
               <span>Local Guide · Google Maps</span>
             </div>
@@ -778,10 +909,10 @@
   <div class="modal-backdrop" id="booking-modal" onclick="if(event.target === this) toggleModal(false)">
     <div class="modal-box">
       <button class="modal-close" onclick="toggleModal(false)" aria-label="Cerrar">×</button>
-      <span class="eyebrow">GUESTPRO · HOTEL GÉMINIS</span>
+      <span class="eyebrow">HOTEL GÉMINIS</span>
       <h3 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 8px;" data-i18n="modal_title">Accede a tu reserva</h3>
       <p style="font-size: 0.88rem; color: var(--ink-muted); margin-bottom: 20px;" data-i18n="modal_desc">
-        Consulta o gestiona tu estancia directamente en nuestro portal oficial.
+        Introduce los datos de tu reserva para consultar o gestionar tu estancia.
       </p>
       <div style="margin-bottom: 14px;">
         <label for="modal-email" style="font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-muted);" data-i18n="modal_email">EMAIL DE CONFIRMACIÓN</label>
@@ -792,7 +923,7 @@
         <input type="text" id="modal-voucher" class="form-input" placeholder="Ej. GEM-2027...">
       </div>
       <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener" class="btn-primary" style="width: 100%; justify-content: center;" data-i18n="modal_btn">
-        Ir al portal GuestPro →
+        Consultar mi reserva →
       </a>
     </div>
   </div>
@@ -823,7 +954,7 @@
         <h4 data-i18n="footer_direct">Reserva Directa</h4>
         <p data-i18n="footer_desc">Mejor tarifa garantizada en nuestra web oficial.</p>
         <a href="https://admin.guestpro.com/es/book/geminis" target="_blank" rel="noopener" style="color: var(--wood-oak); font-weight: 700; margin-top: 10px;" data-i18n="footer_panel">
-          → Panel Oficial GuestPro
+          Reservar online →
         </a>
         <div style="margin-top: 16px;">
           <a href="https://www.tripadvisor.es/Hotel_Review-g187465-d572771-Reviews-Geminis_Hotel-Ciutadella_Menorca_Balearic_Islands.html" target="_blank" rel="noopener" style="display:inline; margin-right: 12px;">TripAdvisor</a>
@@ -856,6 +987,61 @@
     }
     window.addEventListener("scroll", reveal);
     reveal();
+
+    // 1.1 MOSAICO CONTINUO DE GALERÍA
+    const galleryViewport = document.querySelector('.gallery-viewport');
+    if (galleryViewport) {
+      const galleryTrack = galleryViewport.querySelector('.gallery-track');
+      const galleryGroups = galleryTrack.querySelectorAll('.gallery-group');
+      if (galleryGroups.length > 1) {
+        galleryGroups[1].replaceChildren(...Array.from(galleryGroups[0].children, photo => photo.cloneNode(true)));
+      }
+      const galleryAnimation = galleryTrack.getAnimations().find(animation =>
+        animation.animationName === 'gallery-loop'
+      );
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function moveGallery(direction) {
+        if (galleryAnimation && !reducedMotion) {
+          const duration = Number(galleryAnimation.effect.getComputedTiming().duration);
+          galleryAnimation.currentTime = (Number(galleryAnimation.currentTime) + direction * duration / 7 + duration) % duration;
+          return;
+        }
+
+        const maxScroll = galleryViewport.scrollWidth - galleryViewport.clientWidth;
+        if (maxScroll <= 1) return;
+
+        const nextScroll = galleryViewport.scrollLeft + direction * galleryViewport.clientWidth * 0.8;
+        galleryViewport.scrollTo({
+          left: nextScroll < 0 ? maxScroll : nextScroll > maxScroll ? 0 : nextScroll,
+          behavior: 'auto'
+        });
+      }
+
+      document.querySelector('[data-gallery-previous]').addEventListener('click', () => moveGallery(-1));
+      document.querySelector('[data-gallery-next]').addEventListener('click', () => moveGallery(1));
+
+      if (galleryAnimation && !reducedMotion) {
+        let dragStartX = 0;
+        let dragStartTime = 0;
+
+        galleryViewport.addEventListener('pointerdown', event => {
+          if (event.pointerType === 'mouse') return;
+          dragStartX = event.clientX;
+          dragStartTime = Number(galleryAnimation.currentTime) || 0;
+          galleryAnimation.pause();
+        });
+        galleryViewport.addEventListener('pointermove', event => {
+          if (!event.isPrimary || !event.buttons) return;
+          const duration = Number(galleryAnimation.effect.getComputedTiming().duration);
+          const groupWidth = galleryTrack.querySelector('.gallery-group').getBoundingClientRect().width;
+          const dragProgress = (dragStartX - event.clientX) / groupWidth;
+          galleryAnimation.currentTime = ((dragStartTime + dragProgress * duration) % duration + duration) % duration;
+        });
+        galleryViewport.addEventListener('pointerup', () => galleryAnimation.play());
+        galleryViewport.addEventListener('pointercancel', () => galleryAnimation.play());
+      }
+    }
 
     // 2. MAPA LEAFLET (SAFE OSM TILE LAYER)
     document.addEventListener("DOMContentLoaded", function() {
@@ -946,7 +1132,7 @@
         perk2_tag: "SERVICIOS PRÁCTICOS", perk2_title: "Preparados para la cala", perk2_body: "Sabemos qué necesitas para un día de sol: disponemos de botellas de agua congelada y ofrecemos servicio de préstamo de sombrillas bajo petición (sujeto a disponibilidad).",
         perk3_tag: "ATENCIÓN CERCANA · 9,6/10", perk3_title: "El parte del viento cada mañana", perk3_body: "En Menorca el viento manda. Nuestro equipo de recepción te indicará mapa en mano qué costa visitar cada día para encontrar el mar en calma y te sugerirá lugares locales para cenar.",
         perk4_tag: "EN EL CENTRO DE CIUTADELLA", perk4_title: "A un paso del casco antiguo", perk4_body: "Estamos a 5 minutos a pie de la Catedral. Aunque el aparcamiento en la puerta es limitado por estar céntricos, hay parkings públicos a pocos minutos caminando.",
-        gallery_eyebrow: "Limpieza 9,5 · Confort 9,5", gallery_title: "Habitaciones exteriores, cálidas y reformadas", gallery_desc: "Espacios luminosos y funcionales pensados para el descanso. Mobiliario en madera natural, climatización y cuartos de baño renovados con duchas amplias.", rooms_cta: "Comprobar disponibilidad de habitaciones →",
+        gallery_eyebrow: "Una mirada a Géminis · espacios con encanto", gallery_title: "Habitaciones para cada viaje y rincones para disfrutar", gallery_desc: "Habitaciones para cada forma de viajar y espacios comunes para disfrutar cada momento. Desliza y descubre el hotel.", gallery_hint: "Desliza o usa las flechas para explorar", gallery_previous: "Foto anterior", gallery_next: "Foto siguiente", gallery_region: "Galería de habitaciones y espacios del hotel", gallery_types_label: "Tipos de habitación", gallery_type_double: "Doble · dos camas separadas", gallery_type_matrimonial: "Matrimonio · una cama doble", gallery_type_triple: "Triple · tres camas individuales", gallery_card_textile: "Un detalle muy nuestro", gallery_card_matrimonial: "Cama de matrimonio", gallery_card_room: "Un rincón para descansar", gallery_card_pool: "Piscina y terraza", gallery_card_cafe: "Cafetería y comedor", gallery_card_entrance: "Entrada del hotel", gallery_card_details: "Detalles de nuestras habitaciones", gallery_alt_textile: "Colcha estampada a los pies de una cama", gallery_alt_matrimonial: "Habitación con cama de matrimonio y cabecero de madera", gallery_alt_room: "Habitación exterior con cama de matrimonio", gallery_alt_pool: "Piscina exterior y terraza del hotel", gallery_alt_cafe: "Desayuno servido en la cafetería del hotel", gallery_alt_entrance: "Entrada principal del Hotel Géminis", gallery_alt_details: "Un rincón acogedor del Hotel Géminis", rooms_cta: "Comprobar disponibilidad de habitaciones →",
         ticket_eyebrow: "Sin comisiones de intermediarios", ticket_title: "Asegura tu estancia directamente con nosotros", ticket_desc: "Reservando a través de nuestra web oficial accedes a nuestra disponibilidad real, al mejor precio garantizado y a condiciones de cancelación más flexibles.",
         tick_direct: "TARIFA DIRECTA", ticket_origin: "Tú Eliges", tick_class: "TIPO DE BILLETE", tick_open: "OPEN PASS WEB", tick_dates: "FECHAS", tick_portal: "ELEGIR EN PORTAL", tick_guests: "HUÉSPEDES", tick_portal2: "ELEGIR EN PORTAL",
         ticket_perk1: "✓ Mejor Precio Garantizado", ticket_perk2: "✓ Pago seguro 100% oficial", ticket_perk3: "✓ Confirmación inmediata",
@@ -979,7 +1165,7 @@
         perk2_tag: "PRACTICAL SERVICES", perk2_title: "Ready for the coves", perk2_body: "We know what you need for a day in the sun: frozen water bottles are available at the café, and we lend beach umbrellas upon request (subject to availability).",
         perk3_tag: "HUMAN RECEPTION · 9.6/10", perk3_title: "The daily wind & cove briefing", perk3_body: "In Menorca, the wind decides. Our team will show you on the map which coast to visit to find calm waters and suggest great local spots for dinner.",
         perk4_tag: "IN THE CENTER OF CIUTADELLA", perk4_title: "Steps from the Old Town", perk4_body: "A 5-minute walk to the Cathedral. While parking right at the door is limited, there are large public parking areas just a few minutes walk away.",
-        gallery_eyebrow: "Cleanliness 9.5 · Comfort 9.5", gallery_title: "Exterior, warm, and renovated rooms", gallery_desc: "Bright and functional spaces designed for resting. Natural wood furniture, air conditioning, and newly renovated bathrooms with walk-in showers.", rooms_cta: "Check room availability →",
+        gallery_eyebrow: "A glimpse of Géminis · spaces with character", gallery_title: "Rooms for every kind of stay, corners to enjoy", gallery_desc: "Rooms for every kind of traveller, and shared spaces to enjoy every moment. Slide through and discover the hotel.", gallery_hint: "Swipe or use the arrows to explore", gallery_previous: "Previous photo", gallery_next: "Next photo", gallery_region: "Gallery of hotel rooms and spaces", gallery_types_label: "Room types", gallery_type_double: "Twin · two separate beds", gallery_type_matrimonial: "Double · one double bed", gallery_type_triple: "Triple · three single beds", gallery_card_textile: "A homely little detail", gallery_card_matrimonial: "A double bed", gallery_card_room: "A quiet place to rest", gallery_card_pool: "Pool & terrace", gallery_card_cafe: "Café & dining room", gallery_card_entrance: "Hotel entrance", gallery_card_details: "Room details", gallery_alt_textile: "Patterned bed runner at the foot of a bed", gallery_alt_matrimonial: "Room with a double bed and wooden headboard", gallery_alt_room: "Exterior room with a double bed", gallery_alt_pool: "Outdoor hotel pool and terrace", gallery_alt_cafe: "Breakfast served in the hotel café", gallery_alt_entrance: "Main entrance of Hotel Géminis", gallery_alt_details: "A welcoming corner of Hotel Géminis", rooms_cta: "Check room availability →",
         ticket_eyebrow: "No middleman commissions", ticket_title: "Secure your stay directly with us", ticket_desc: "By booking through our official website you get access to real availability, our best price guarantee, and more flexible cancellation conditions.",
         tick_direct: "DIRECT RATE", ticket_origin: "You Choose", tick_class: "TICKET TYPE", tick_open: "OPEN PASS WEB", tick_dates: "DATES", tick_portal: "CHOOSE IN PORTAL", tick_guests: "GUESTS", tick_portal2: "CHOOSE IN PORTAL",
         ticket_perk1: "✓ Best Price Guarantee", ticket_perk2: "✓ 100% secure official payment", ticket_perk3: "✓ Instant confirmation",
@@ -1012,7 +1198,7 @@
         perk2_tag: "SERVEIS PRÀCTICS", perk2_title: "Preparats per a la cala", perk2_body: "Sabem què necessites per a un dia de sol: disposem d'ampolles d'aigua congelada i oferim servei de préstec de para-sols sota petició (subjecte a disponibilitat).",
         perk3_tag: "ATENCIÓ PROPERA · 9,6/10", perk3_title: "El comunicat del vent cada matí", perk3_body: "A Menorca el vent mana. El nostre equip de recepció t'indicarà mapa en mà quina costa visitar cada dia per trobar el mar en calma i et suggeriran llocs locals per sopar.",
         perk4_tag: "AL CENTRE DE CIUTADELLA", perk4_title: "A un pas del nucli antic", perk4_body: "Estem a 5 minuts a peu de la Catedral. Tot i que l'aparcament a la porta és limitat per estar cèntrics, hi ha pàrquings públics a pocs minuts caminant.",
-        gallery_eyebrow: "Neteja 9,5 · Confort 9,5", gallery_title: "Habitacions exteriors, càlides i reformades", gallery_desc: "Espais lluminosos i funcionals pensats per al descans. Mobiliari de fusta natural, climatització i banys renovats amb dutxes àmplies.", rooms_cta: "Comprovar disponibilitat d'habitacions →",
+        gallery_eyebrow: "Una mirada a Géminis · espais amb encant", gallery_title: "Habitacions per a cada viatge i racons per gaudir", gallery_desc: "Habitacions per a cada manera de viatjar i espais comuns per gaudir de cada moment. Llisca i descobreix l'hotel.", gallery_hint: "Llisca o fes servir les fletxes per explorar", gallery_previous: "Foto anterior", gallery_next: "Foto següent", gallery_region: "Galeria d'habitacions i espais de l'hotel", gallery_types_label: "Tipus d'habitació", gallery_type_double: "Doble · dos llits separats", gallery_type_matrimonial: "Matrimoni · un llit doble", gallery_type_triple: "Triple · tres llits individuals", gallery_card_textile: "Un detall molt nostre", gallery_card_matrimonial: "Llit de matrimoni", gallery_card_room: "Un racó per descansar", gallery_card_pool: "Piscina i terrassa", gallery_card_cafe: "Cafeteria i menjador", gallery_card_entrance: "Entrada de l'hotel", gallery_card_details: "Detalls de les nostres habitacions", gallery_alt_textile: "Cobertor estampat als peus d'un llit", gallery_alt_matrimonial: "Habitació amb llit de matrimoni i capçal de fusta", gallery_alt_room: "Habitació exterior amb llit de matrimoni", gallery_alt_pool: "Piscina exterior i terrassa de l'hotel", gallery_alt_cafe: "Esmorzar servit a la cafeteria de l'hotel", gallery_alt_entrance: "Entrada principal de l'Hotel Géminis", gallery_alt_details: "Un racó acollidor de l'Hotel Géminis", rooms_cta: "Comprovar disponibilitat d'habitacions →",
         ticket_eyebrow: "Sense comissions d'intermediaris", ticket_title: "Assegura la teva estada directament amb nosaltres", ticket_desc: "Reservant a través de la nostra web oficial accedeixes a la nostra disponibilitat real, al millor preu garantit i a condicions de cancel·lació més flexibles.",
         tick_direct: "TARIFA DIRECTA", ticket_origin: "Tu Tries", tick_class: "TIPUS DE BITLLET", tick_open: "OPEN PASS WEB", tick_dates: "DATES", tick_portal: "TRIAR AL PORTAL", tick_guests: "HOSTES", tick_portal2: "TRIAR AL PORTAL",
         ticket_perk1: "✓ Millor Preu Garantit", ticket_perk2: "✓ Pagament segur 100% oficial", ticket_perk3: "✓ Confirmació immediata",
@@ -1045,7 +1231,7 @@
         perk2_tag: "SERVICES PRATIQUES", perk2_title: "Prêts pour la crique", perk2_body: "Nous savons ce dont vous avez besoin pour une journée au soleil : nous avons des bouteilles d'eau congelées et proposons des parasols sur demande (sous réserve de disponibilité).",
         perk3_tag: "ACCUEIL CHALEUREUX · 9,6/10", perk3_title: "Le bulletin météo chaque matin", perk3_body: "À Minorque, c'est le vent qui décide. Notre équipe de réception vous montrera sur la carte quelle côte visiter chaque jour pour trouver une mer calme et vous suggérera des endroits locaux pour dîner.",
         perk4_tag: "AU CENTRE DE CIUTADELLA", perk4_title: "À deux pas de la vieille ville", perk4_body: "Nous sommes à 5 minutes à pied de la Cathédrale. Bien que le stationnement devant la porte soit limité, il y a des parkings publics à quelques minutes de marche.",
-        gallery_eyebrow: "Propreté 9,5 · Confort 9,5", gallery_title: "Chambres extérieures, chaleureuses et rénovées", gallery_desc: "Espaces lumineux et fonctionnels conçus pour le repos. Meubles en bois naturel, climatisation et salles de bains rénovées avec de grandes douches.", rooms_cta: "Vérifier la disponibilité des chambres →",
+        gallery_eyebrow: "Un aperçu de Géminis · des espaces pleins de charme", gallery_title: "Des chambres pour chaque séjour et des coins à découvrir", gallery_desc: "Des chambres pour chaque type de séjour et des espaces communs pour profiter de chaque instant. Faites défiler pour découvrir l'hôtel.", gallery_hint: "Faites défiler ou utilisez les flèches", gallery_previous: "Photo précédente", gallery_next: "Photo suivante", gallery_region: "Galerie des chambres et des espaces de l'hôtel", gallery_types_label: "Types de chambres", gallery_type_double: "Deux lits · deux lits séparés", gallery_type_matrimonial: "Lit double · un grand lit", gallery_type_triple: "Triple · trois lits simples", gallery_card_textile: "Un détail qui nous ressemble", gallery_card_matrimonial: "Un lit double", gallery_card_room: "Un coin pour se reposer", gallery_card_pool: "Piscine et terrasse", gallery_card_cafe: "Cafétéria et salle à manger", gallery_card_entrance: "Entrée de l'hôtel", gallery_card_details: "Détails de nos chambres", gallery_alt_textile: "Chemin de lit à motifs au pied d'un lit", gallery_alt_matrimonial: "Chambre avec lit double et tête de lit en bois", gallery_alt_room: "Chambre extérieure avec lit double", gallery_alt_pool: "Piscine extérieure et terrasse de l'hôtel", gallery_alt_cafe: "Petit-déjeuner servi à la cafétéria de l'hôtel", gallery_alt_entrance: "Entrée principale de l'Hôtel Géminis", gallery_alt_details: "Un coin accueillant de l'Hôtel Géminis", rooms_cta: "Vérifier la disponibilité des chambres →",
         ticket_eyebrow: "Sans commissions d'intermédiaires", ticket_title: "Réservez votre séjour directement avec nous", ticket_desc: "En réservant via notre site officiel, vous accédez à notre disponibilité réelle, au meilleur prix garanti et à des conditions d'annulation plus flexibles.",
         tick_direct: "TARIF DIRECT", ticket_origin: "Vous Choisissez", tick_class: "TYPE DE BILLET", tick_open: "OPEN PASS WEB", tick_dates: "DATES", tick_portal: "CHOISIR SUR LE PORTAIL", tick_guests: "CLIENTS", tick_portal2: "CHOISIR SUR LE PORTAIL",
         ticket_perk1: "✓ Meilleur Prix Garanti", ticket_perk2: "✓ Paiement sécurisé 100% officiel", ticket_perk3: "✓ Confirmation immédiate",
@@ -1078,7 +1264,7 @@
         perk2_tag: "SERVIZI PRATICI", perk2_title: "Pronti per la caletta", perk2_body: "Sappiamo di cosa hai bisogno per una giornata al sole: abbiamo bottiglie d'acqua congelate e offriamo ombrelloni su richiesta (soggetti a disponibilità).",
         perk3_tag: "ACCOGLIENZA CALOROSA · 9,6/10", perk3_title: "Il bollettino del vento ogni mattina", perk3_body: "A Minorca comanda il vento. Il nostro team della reception ti mostrerà sulla mappa quale costa visitare ogni giorno per trovare mare calmo e suggerirà ottimi posti locali per cenare.",
         perk4_tag: "NEL CENTRO DI CIUTADELLA", perk4_title: "A un passo dal centro storico", perk4_body: "Siamo a 5 minuti a piedi dalla Cattedrale. Anche se il parcheggio davanti alla porta è limitato, ci sono parcheggi pubblici a pochi minuti a piedi.",
-        gallery_eyebrow: "Pulizia 9,5 · Comfort 9,5", gallery_title: "Camere esterne, accoglienti e rinnovate", gallery_desc: "Spazi luminosi e funzionali pensati per il riposo. Mobili in legno naturale, aria condizionata e bagni rinnovati con ampie docce.", rooms_cta: "Verifica la disponibilità delle camere →",
+        gallery_eyebrow: "Uno sguardo a Géminis · spazi dal fascino speciale", gallery_title: "Camere per ogni viaggio e angoli da vivere", gallery_desc: "Camere per ogni modo di viaggiare e spazi comuni da godersi in ogni momento. Scorri e scopri l'hotel.", gallery_hint: "Scorri o usa le frecce per esplorare", gallery_previous: "Foto precedente", gallery_next: "Foto successiva", gallery_region: "Galleria delle camere e degli spazi dell'hotel", gallery_types_label: "Tipi di camera", gallery_type_double: "Doppia · due letti separati", gallery_type_matrimonial: "Matrimoniale · un letto matrimoniale", gallery_type_triple: "Tripla · tre letti singoli", gallery_card_textile: "Un dettaglio di casa", gallery_card_matrimonial: "Un letto matrimoniale", gallery_card_room: "Un angolo per riposare", gallery_card_pool: "Piscina e terrazza", gallery_card_cafe: "Caffetteria e sala da pranzo", gallery_card_entrance: "Ingresso dell'hotel", gallery_card_details: "Dettagli delle nostre camere", gallery_alt_textile: "Coperta fantasia ai piedi di un letto", gallery_alt_matrimonial: "Camera con letto matrimoniale e testiera in legno", gallery_alt_room: "Camera esterna con letto matrimoniale", gallery_alt_pool: "Piscina esterna e terrazza dell'hotel", gallery_alt_cafe: "Colazione servita nella caffetteria dell'hotel", gallery_alt_entrance: "Ingresso principale dell'Hotel Géminis", gallery_alt_details: "Un angolo accogliente dell'Hotel Géminis", rooms_cta: "Verifica la disponibilità delle camere →",
         ticket_eyebrow: "Nessuna commissione di intermediazione", ticket_title: "Assicura il tuo soggiorno direttamente con noi", ticket_desc: "Prenotando tramite il nostro sito ufficiale accedi alla nostra reale disponibilità, al miglior prezzo garantito e a condizioni di cancellazione più flessibili.",
         tick_direct: "TARIFFA DIRETTA", ticket_origin: "Scegli Tu", tick_class: "TIPO DI BIGLIETTO", tick_open: "OPEN PASS WEB", tick_dates: "DATE", tick_portal: "SCEGLI NEL PORTALE", tick_guests: "OSPITI", tick_portal2: "SCEGLI NEL PORTALE",
         ticket_perk1: "✓ Miglior Prezzo Garantito", ticket_perk2: "✓ Pagamento sicuro 100% ufficiale", ticket_perk3: "✓ Conferma immediata",
@@ -1100,6 +1286,45 @@
       }
     };
 
+    const bookingLabels = {
+      es: {
+        gallery_eyebrow: "Espacios del Hotel Géminis",
+        tick_class: "RESERVA DIRECTA", tick_open: "EN LA WEB", tick_portal: "ELEGIR FECHAS", tick_portal2: "INDICAR HUÉSPEDES",
+        stub_title: "Reservar estancia", stub_subtitle: "Consulta disponibilidad y elige las fechas de tu estancia.", stub_btn: "Consultar fechas →",
+        modal_title: "Consultar o modificar reserva", modal_desc: "Introduce los datos de tu reserva para consultar o gestionar tu estancia.", modal_btn: "Consultar mi reserva →",
+        footer_panel: "Reservar online →"
+      },
+      en: {
+        gallery_eyebrow: "Hotel Géminis spaces",
+        tick_class: "DIRECT BOOKING", tick_open: "ON OUR WEBSITE", tick_portal: "CHOOSE DATES", tick_portal2: "ADD GUESTS",
+        stub_title: "Book your stay", stub_subtitle: "Check availability and choose the dates for your stay.", stub_btn: "Check dates →",
+        modal_title: "View or change a booking", modal_desc: "Enter your booking details to view or manage your stay.", modal_btn: "View my booking →",
+        footer_panel: "Book online →"
+      },
+      ca: {
+        gallery_eyebrow: "Espais de l'Hotel Géminis",
+        tick_class: "RESERVA DIRECTA", tick_open: "AL NOSTRE WEB", tick_portal: "TRIA LES DATES", tick_portal2: "INDICA ELS HOSTES",
+        stub_title: "Reserva l'estada", stub_subtitle: "Consulta la disponibilitat i tria les dates de la teva estada.", stub_btn: "Consultar dates →",
+        modal_title: "Consulta o modifica la reserva", modal_desc: "Introdueix les dades de la reserva per consultar o gestionar l'estada.", modal_btn: "Consultar la meva reserva →",
+        footer_panel: "Reserva en línia →"
+      },
+      fr: {
+        gallery_eyebrow: "Les espaces de l'Hôtel Géminis",
+        tick_class: "RÉSERVATION DIRECTE", tick_open: "SUR NOTRE SITE", tick_portal: "CHOISIR LES DATES", tick_portal2: "INDIQUER LES VOYAGEURS",
+        stub_title: "Réserver un séjour", stub_subtitle: "Consultez les disponibilités et choisissez les dates de votre séjour.", stub_btn: "Voir les dates →",
+        modal_title: "Consulter ou modifier une réservation", modal_desc: "Saisissez les informations de votre réservation pour consulter ou gérer votre séjour.", modal_btn: "Consulter ma réservation →",
+        footer_panel: "Réserver en ligne →"
+      },
+      it: {
+        gallery_eyebrow: "Gli spazi dell'Hotel Géminis",
+        tick_class: "PRENOTAZIONE DIRETTA", tick_open: "SUL NOSTRO SITO", tick_portal: "SCEGLI LE DATE", tick_portal2: "INDICA GLI OSPITI",
+        stub_title: "Prenota il soggiorno", stub_subtitle: "Consulta la disponibilità e scegli le date del soggiorno.", stub_btn: "Consulta le date →",
+        modal_title: "Consulta o modifica la prenotazione", modal_desc: "Inserisci i dati della prenotazione per consultare o gestire il soggiorno.", modal_btn: "Consulta la mia prenotazione →",
+        footer_panel: "Prenota online →"
+      }
+    };
+    Object.keys(bookingLabels).forEach(lang => Object.assign(i18n[lang], bookingLabels[lang]));
+
     function setLang(lang) {
       document.documentElement.lang = lang;
       document.querySelectorAll('.lang-btn').forEach(btn => {
@@ -1112,6 +1337,14 @@
         if (dict[key]) {
           el.innerHTML = dict[key];
         }
+      });
+      document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        const key = el.getAttribute('data-i18n-aria');
+        if (dict[key]) el.setAttribute('aria-label', dict[key]);
+      });
+      document.querySelectorAll('[data-i18n-alt]').forEach(el => {
+        const key = el.getAttribute('data-i18n-alt');
+        if (dict[key]) el.setAttribute('alt', dict[key]);
       });
     }
   </script>

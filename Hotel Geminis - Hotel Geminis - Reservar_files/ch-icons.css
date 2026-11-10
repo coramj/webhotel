@@ -1,0 +1,240 @@
+@font-face {
+  font-family: 'ch-icons';
+  src: url('../font/ch-icons.eot?38159967');
+  src: url('../font/ch-icons.eot?38159967#iefix') format('embedded-opentype'),
+       url('../font/ch-icons.woff2?38159967') format('woff2'),
+       url('../font/ch-icons.woff?38159967') format('woff'),
+       url('../font/ch-icons.ttf?38159967') format('truetype'),
+       url('../font/ch-icons.svg?38159967#ch-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'ch-icons';
+    src: url('../font/ch-icons.svg?38159967#ch-icons') format('svg');
+  }
+}
+*/
+[class^="ch-icon-"]:before, [class*=" ch-icon-"]:before {
+  font-family: "ch-icons";
+  font-style: normal;
+  font-weight: normal;
+  speak: never;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.ch-icon-24-hours:before { content: '\e800'; } /* '' */
+.ch-icon-air-conditioning:before { content: '\e801'; } /* '' */
+.ch-icon-airplane:before { content: '\e802'; } /* '' */
+.ch-icon-alarm-clock:before { content: '\e803'; } /* '' */
+.ch-icon-amenities:before { content: '\e804'; } /* '' */
+.ch-icon-baby-cart:before { content: '\e805'; } /* '' */
+.ch-icon-bag:before { content: '\e806'; } /* '' */
+.ch-icon-balcony:before { content: '\e807'; } /* '' */
+.ch-icon-barbecue:before { content: '\e808'; } /* '' */
+.ch-icon-basket:before { content: '\e809'; } /* '' */
+.ch-icon-bathrobe:before { content: '\e80a'; } /* '' */
+.ch-icon-bathroom:before { content: '\e80b'; } /* '' */
+.ch-icon-beach-umbrella:before { content: '\e80c'; } /* '' */
+.ch-icon-bed:before { content: '\e80d'; } /* '' */
+.ch-icon-bed2:before { content: '\e80e'; } /* '' */
+.ch-icon-bike:before { content: '\e80f'; } /* '' */
+.ch-icon-blanket:before { content: '\e810'; } /* '' */
+.ch-icon-book:before { content: '\e811'; } /* '' */
+.ch-icon-breakfast:before { content: '\e812'; } /* '' */
+.ch-icon-buffet:before { content: '\e813'; } /* '' */
+.ch-icon-business-chair:before { content: '\e814'; } /* '' */
+.ch-icon-calendar:before { content: '\e815'; } /* '' */
+.ch-icon-car:before { content: '\e816'; } /* '' */
+.ch-icon-car2:before { content: '\e817'; } /* '' */
+.ch-icon-check-in-clock:before { content: '\e818'; } /* '' */
+.ch-icon-check-in-out-clock:before { content: '\e819'; } /* '' */
+.ch-icon-check-in-out:before { content: '\e81a'; } /* '' */
+.ch-icon-check-out-clock:before { content: '\e81b'; } /* '' */
+.ch-icon-children-play-area:before { content: '\e81c'; } /* '' */
+.ch-icon-cleaning-products:before { content: '\e81d'; } /* '' */
+.ch-icon-closet:before { content: '\e81e'; } /* '' */
+.ch-icon-coffe-italian-machine:before { content: '\e81f'; } /* '' */
+.ch-icon-coffe-machine:before { content: '\e820'; } /* '' */
+.ch-icon-coffe-machine2:before { content: '\e821'; } /* '' */
+.ch-icon-coffee-cup:before { content: '\e822'; } /* '' */
+.ch-icon-coin:before { content: '\e823'; } /* '' */
+.ch-icon-cooled-backpack:before { content: '\e824'; } /* '' */
+.ch-icon-cot:before { content: '\e825'; } /* '' */
+.ch-icon-credit-card:before { content: '\e826'; } /* '' */
+.ch-icon-crockery:before { content: '\e827'; } /* '' */
+.ch-icon-currency:before { content: '\e828'; } /* '' */
+.ch-icon-cutlery:before { content: '\e829'; } /* '' */
+.ch-icon-desk-bell:before { content: '\e82a'; } /* '' */
+.ch-icon-desk:before { content: '\e82b'; } /* '' */
+.ch-icon-disabled:before { content: '\e82c'; } /* '' */
+.ch-icon-dishwasher:before { content: '\e82d'; } /* '' */
+.ch-icon-doc:before { content: '\e82e'; } /* '' */
+.ch-icon-doctor:before { content: '\e82f'; } /* '' */
+.ch-icon-double-bed:before { content: '\e830'; } /* '' */
+.ch-icon-dvd:before { content: '\e831'; } /* '' */
+.ch-icon-electric-cooker:before { content: '\e832'; } /* '' */
+.ch-icon-excursion:before { content: '\e833'; } /* '' */
+.ch-icon-extinguisher:before { content: '\e834'; } /* '' */
+.ch-icon-extra-cleaning:before { content: '\e835'; } /* '' */
+.ch-icon-fan:before { content: '\e836'; } /* '' */
+.ch-icon-fireplace:before { content: '\e837'; } /* '' */
+.ch-icon-freezer:before { content: '\e838'; } /* '' */
+.ch-icon-footprint:before { content: '\e839'; } /* '' */
+.ch-icon-fridge:before { content: '\e83a'; } /* '' */
+.ch-icon-games-console:before { content: '\e83b'; } /* '' */
+.ch-icon-garden:before { content: '\e83c'; } /* '' */
+.ch-icon-gift-box:before { content: '\e83d'; } /* '' */
+.ch-icon-green-car:before { content: '\e83e'; } /* '' */
+.ch-icon-green-car2:before { content: '\e83f'; } /* '' */
+.ch-icon-green-plugin:before { content: '\e840'; } /* '' */
+.ch-icon-guests:before { content: '\e841'; } /* '' */
+.ch-icon-gym:before { content: '\e842'; } /* '' */
+.ch-icon-banquet:before { content: '\e843'; } /* '' */
+.ch-icon-hairdressing:before { content: '\e844'; } /* '' */
+.ch-icon-hammock:before { content: '\e845'; } /* '' */
+.ch-icon-hand-gel:before { content: '\e846'; } /* '' */
+.ch-icon-meeting:before { content: '\e847'; } /* '' */
+.ch-icon-heating:before { content: '\e848'; } /* '' */
+.ch-icon-hotel-bell:before { content: '\e849'; } /* '' */
+.ch-icon-high-chair:before { content: '\e84a'; } /* '' */
+.ch-icon-internet:before { content: '\e84b'; } /* '' */
+.ch-icon-iron:before { content: '\e84c'; } /* '' */
+.ch-icon-jacuzzi:before { content: '\e84d'; } /* '' */
+.ch-icon-kettle:before { content: '\e84e'; } /* '' */
+.ch-icon-kitchen:before { content: '\e84f'; } /* '' */
+.ch-icon-kitchenware:before { content: '\e850'; } /* '' */
+.ch-icon-laundry:before { content: '\e851'; } /* '' */
+.ch-icon-laptop:before { content: '\e852'; } /* '' */
+.ch-icon-lift:before { content: '\e853'; } /* '' */
+.ch-icon-microwave:before { content: '\e854'; } /* '' */
+.ch-icon-mini-fridge:before { content: '\e855'; } /* '' */
+.ch-icon-minibar:before { content: '\e856'; } /* '' */
+.ch-icon-mixer:before { content: '\e857'; } /* '' */
+.ch-icon-mop:before { content: '\e858'; } /* '' */
+.ch-icon-music-player:before { content: '\e859'; } /* '' */
+.ch-icon-no-smoking:before { content: '\e85a'; } /* '' */
+.ch-icon-outdoor-deck:before { content: '\e85b'; } /* '' */
+.ch-icon-owen:before { content: '\e85c'; } /* '' */
+.ch-icon-outdoor-table:before { content: '\e85d'; } /* '' */
+.ch-icon-parking:before { content: '\e85e'; } /* '' */
+.ch-icon-picnic:before { content: '\e85f'; } /* '' */
+.ch-icon-pillow:before { content: '\e860'; } /* '' */
+.ch-icon-spa:before { content: '\e861'; } /* '' */
+.ch-icon-pool-towels:before { content: '\e862'; } /* '' */
+.ch-icon-popcorn:before { content: '\e863'; } /* '' */
+.ch-icon-porch:before { content: '\e864'; } /* '' */
+.ch-icon-parquet:before { content: '\e865'; } /* '' */
+.ch-icon-private-pool:before { content: '\e866'; } /* '' */
+.ch-icon-promotion:before { content: '\e867'; } /* '' */
+.ch-icon-recycling:before { content: '\e868'; } /* '' */
+.ch-icon-room-service:before { content: '\e869'; } /* '' */
+.ch-icon-safe:before { content: '\e86a'; } /* '' */
+.ch-icon-sat-or-cable-tv:before { content: '\e86b'; } /* '' */
+.ch-icon-satellite:before { content: '\e86c'; } /* '' */
+.ch-icon-shopping-bag:before { content: '\e86d'; } /* '' */
+.ch-icon-single-bed:before { content: '\e86f'; } /* '' */
+.ch-icon-smoke-detector:before { content: '\e870'; } /* '' */
+.ch-icon-smoke-extractor:before { content: '\e871'; } /* '' */
+.ch-icon-snowflake:before { content: '\e872'; } /* '' */
+.ch-icon-squeezer:before { content: '\e875'; } /* '' */
+.ch-icon-suitcase-travel:before { content: '\e876'; } /* '' */
+.ch-icon-sun-loungers:before { content: '\e877'; } /* '' */
+.ch-icon-table&chairs:before { content: '\e878'; } /* '' */
+.ch-icon-tea-cup:before { content: '\e879'; } /* '' */
+.ch-icon-telephone:before { content: '\e87a'; } /* '' */
+.ch-icon-tenis:before { content: '\e87b'; } /* '' */
+.ch-icon-toaster:before { content: '\e87c'; } /* '' */
+.ch-icon-tourist-info:before { content: '\e87d'; } /* '' */
+.ch-icon-towel:before { content: '\e87e'; } /* '' */
+.ch-icon-towels:before { content: '\e87f'; } /* '' */
+.ch-icon-tv:before { content: '\e880'; } /* '' */
+.ch-icon-twin-beds:before { content: '\e881'; } /* '' */
+.ch-icon-unlock:before { content: '\e882'; } /* '' */
+.ch-icon-videogames:before { content: '\e883'; } /* '' */
+.ch-icon-washing-machine:before { content: '\e884'; } /* '' */
+.ch-icon-waste-recycling:before { content: '\e885'; } /* '' */
+.ch-icon-water-bottle:before { content: '\e886'; } /* '' */
+.ch-icon-weight-scale:before { content: '\e887'; } /* '' */
+.ch-icon-wellness:before { content: '\e888'; } /* '' */
+.ch-icon-discount:before { content: '\e889'; } /* '' */
+.ch-icon-green-plugin-1:before { content: '\e88a'; } /* '' */
+.ch-icon-snack:before { content: '\e890'; } /* '' */
+.ch-icon-canopy-bed:before { content: '\e891'; } /* '' */
+.ch-icon-pool-slides:before { content: '\e892'; } /* '' */
+.ch-icon-massage:before { content: '\e893'; } /* '' */
+.ch-icon-facial-massage:before { content: '\e894'; } /* '' */
+.ch-icon-cosmetic-products:before { content: '\e895'; } /* '' */
+.ch-icon-beach-access:before { content: '\e896'; } /* '' */
+.ch-icon-wheelchair-ramp:before { content: '\e897'; } /* '' */
+.ch-icon-wheelchair:before { content: '\e898'; } /* '' */
+.ch-icon-garden-flower:before { content: '\e899'; } /* '' */
+.ch-icon-garden-tulip:before { content: '\e89a'; } /* '' */
+.ch-icon-hiking-boots:before { content: '\e89b'; } /* '' */
+.ch-icon-route-trail:before { content: '\e89c'; } /* '' */
+.ch-icon-chromecast:before { content: '\e89d'; } /* '' */
+.ch-icon-archery:before { content: '\e89e'; } /* '' */
+.ch-icon-paddle-surf:before { content: '\e89f'; } /* '' */
+.ch-icon-megaphone:before { content: '\e8a0'; } /* '' */
+.ch-icon-entertainment:before { content: '\e8a1'; } /* '' */
+.ch-icon-restaurant-menu:before { content: '\e8a2'; } /* '' */
+.ch-icon-restaurant:before { content: '\e8a3'; } /* '' */
+.ch-icon-star:before { content: '\e8a4'; } /* '' */
+.ch-icon-heart:before { content: '\e8a5'; } /* '' */
+.ch-icon-yoga:before { content: '\e8a6'; } /* '' */
+.ch-icon-furnitures:before { content: '\e8a7'; } /* '' */
+.ch-icon-portfolio:before { content: '\e8a8'; } /* '' */
+.ch-icon-heat:before { content: '\e8a9'; } /* '' */
+.ch-icon-jacuzzi2:before { content: '\e8aa'; } /* '' */
+.ch-icon-golf:before { content: '\e8ab'; } /* '' */
+.ch-icon-suite:before { content: '\e8ae'; } /* '' */
+.ch-icon-hot-spring:before { content: '\e8af'; } /* '' */
+.ch-icon-parquet2:before { content: '\e8b0'; } /* '' */
+.ch-icon-square-meter:before { content: '\e8b1'; } /* '' */
+.ch-icon-ccvv:before { content: '\e8b3'; } /* '' */
+.ch-icon-door:before { content: '\e8b4'; } /* '' */
+.ch-icon-noise-detector:before { content: '\e8b5'; } /* '' */
+.ch-icon-alert:before { content: '\e8b6'; } /* '' */
+.ch-icon-mask:before { content: '\e8b7'; } /* '' */
+.ch-icon-billar:before { content: '\e8dc'; } /* '' */
+.ch-icon-microphone:before { content: '\e8dd'; } /* '' */
+.ch-icon-shower-head:before { content: '\e8de'; } /* '' */
+.ch-icon-shower:before { content: '\e8df'; } /* '' */
+.ch-icon-shower2:before { content: '\e8e0'; } /* '' */
+.ch-icon-hair-dryer:before { content: '\e8e1'; } /* '' */
+.ch-icon-living-room:before { content: '\e8e3'; } /* '' */
+.ch-icon-sofa-bed:before { content: '\e8e4'; } /* '' */
+.ch-icon-sofa-set:before { content: '\e8e5'; } /* '' */
+.ch-icon-reception:before { content: '\e8e8'; } /* '' */
+.ch-icon-auto-check-in:before { content: '\e8e9'; } /* '' */
